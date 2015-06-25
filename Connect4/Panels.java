@@ -9,6 +9,7 @@ import javax.swing.JPanel;
  * @author Owen Jow
  */
 public class Panels {
+    static KPanel currPanel;
     static JPanel contentPanel;
     static VsCPUMenuPanel vsCPUMenuPanel;
     static VsHumanMenuPanel vsHumanMenuPanel;
@@ -22,4 +23,5 @@ public class Panels {
     static RemovalPanel removalPanel;
     static BoardsPanel boardsPanel;
     static CardLayout layout;
+    static MainMenuPanel mainMenuPanel;
 }

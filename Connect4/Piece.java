@@ -9,7 +9,7 @@ import java.awt.Point;
  */
 public class Piece {
     static final int WIDTH = 55;
-    private String color;
+    String color;
     private Point position;
     int col; // the piece's column
     int finalLevel; // the final row that this piece will occupy within its column

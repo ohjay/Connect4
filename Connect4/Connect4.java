@@ -44,6 +44,8 @@ public class Connect4 extends JApplet {
         Panels.contentPanel.add(Panels.twoPlayerPanel, "twoPlayer");
         
         // Initialize menu panels
+        Panels.mainMenuPanel = new MainMenuPanel();
+        Panels.contentPanel.add(Panels.mainMenuPanel, "mainMenu");
         Panels.vsCPUMenuPanel = new VsCPUMenuPanel();
         Panels.contentPanel.add(Panels.vsCPUMenuPanel, "vsCPUMenu");
         Panels.vsHumanMenuPanel = new VsHumanMenuPanel();
@@ -83,6 +85,7 @@ public class Connect4 extends JApplet {
         window.setLocationRelativeTo(null);
         
         Panels.twoPlayerPanel.activate();
+        Panels.currPanel = Panels.twoPlayerPanel;
         window.setContentPane(Panels.contentPanel);
         window.setVisible(true);
     }

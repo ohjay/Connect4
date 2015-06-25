@@ -1,7 +1,5 @@
 package Connect4;
 
-import javax.swing.JPanel;
-
-public class SolvedPanel extends JPanel {
+public class SolvedPanel extends KPanel {
     
 }

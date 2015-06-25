@@ -5,14 +5,13 @@ import java.awt.Graphics2D;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 import java.awt.event.MouseAdapter;
-import javax.swing.JPanel;
 import javax.swing.Timer;
 
 /**
  * An abstract class for regular Connect4 gameplay (gameplay with a 7x7 board and two players).
  * @author Owen Jow
  */
-public abstract class ReguC4Panel extends JPanel implements ActionListener {
+public abstract class ReguC4Panel extends KPanel implements ActionListener {
     private Timer timer;
     protected MouseAdapter mouseListener;
     protected ReguBoard reguBoard;
@@ -44,8 +43,9 @@ public abstract class ReguC4Panel extends JPanel implements ActionListener {
     }
     
     /**
-     * Activates this panel, adding a mouse listener and starting the timer.
+     * Activates this panel, adding mouse listeners and starting the timer.
      */
+    @Override
     public void activate() {
         addMouseListener(mouseListener);
         addMouseMotionListener(mouseListener);
@@ -54,8 +54,9 @@ public abstract class ReguC4Panel extends JPanel implements ActionListener {
     }
     
     /**
-     * Deactivates this panel, removing a mouse listener and stopping the timer.
+     * Deactivates this panel, removing mouse listeners and stopping the timer.
      */
+    @Override
     public void deactivate() {
         removeMouseListener(mouseListener);
         removeMouseMotionListener(mouseListener);

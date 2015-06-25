@@ -32,6 +32,92 @@ public class ReguBoard {
     }
     
     /**
+     * Checks if piece PIECE makes a connected four with any other pieces on the board.
+     * Presumably, PIECE will be the piece that was most recently played.
+     * @param piece the piece to base checks around
+     * @boolean true if there is a connected four on the board that involves the given piece
+     */
+    public boolean makesFour(Piece piece) {
+        int count1 = 0;
+        
+        // Check for vertical fours
+        int i = chooseGreater(piece.finalLevel - 3, 0); // Initialize the vertical starting row
+        for (; i < chooseLesser(piece.finalLevel + 3, BOARD_LEN - 1); i++) {
+            if (sameTeam(piece.color, board[i][piece.col])) {
+                count1++; // increment the vertical count
+            } else count1 = 0;
+            
+            // Return true if there's four in a row
+            if (count1 >= 4) return true;
+        }
+        
+        // Check for horizontal fours
+        i = chooseGreater(piece.col - 3, 0);  // Initialize the horizontal starting column
+        for (count1 = 0; i < chooseLesser(piece.col + 3, BOARD_LEN - 1); i++) {
+            if (sameTeam(piece.color, board[piece.finalLevel][i])) {
+                count1++; // increment the horizontal count
+            } else count1 = 0;
+            
+            if (count1 >= 4) return true;
+        }
+        
+        // Check for diagonal fours
+        int count2 = 0, count3 = 0, count4 = 0; // initializing some extra count variables
+        for (i = 0, count1 = 0; i < 4; i++) {
+            // Heading in a top-left direction
+            if (piece.finalLevel - i >= 0 && piece.col - i >= 0) {
+                if (sameTeam(piece.color, board[piece.finalLevel - i][piece.col - i])) count1++;
+                else count1 = 0;
+            }
+            
+            // Heading in a bottom-left direction
+            if (piece.finalLevel - i >= 0 && piece.col + i < BOARD_LEN) {
+                if (sameTeam(piece.color, board[piece.finalLevel - i][piece.col + i])) count2++;
+                else count2 = 0;
+            }
+            
+            // Heading in a top-right direction
+            if (piece.finalLevel + i < BOARD_LEN && piece.col - i >= 0) {
+                if (sameTeam(piece.color, board[piece.finalLevel + i][piece.col - i])) count3++;
+                else count3 = 0;
+            }
+            
+            // Heading in a bottom-right direction
+            if (piece.finalLevel + i < BOARD_LEN && piece.col + i < BOARD_LEN) {
+                if (sameTeam(piece.color, board[piece.finalLevel + i][piece.col + i])) count4++;
+                else count4 = 0;
+            }
+        }
+        
+        return (count1 == 4 || count2 == 4 || count3 == 4 || count4 == 4);
+    }
+    
+    /**
+     * Returns true if piece PIECE is on the team specified by COLOR.
+     */
+    private boolean sameTeam(String color, Piece piece) {
+        return piece != null && color.equals(piece.color);
+    }
+    
+    /**
+     * A helper function for choosing the greater of two integers.
+     * Given two integers, it will return whichever one is greater in value.
+     * If the integers are equal in value, it will return the first one.
+     */
+    private int chooseGreater(int a, int b) {
+        return (b > a) ? b : a;
+    }
+    
+    /**
+     * A helper function for choosing the lesser / "lower" of two integers.
+     * Given two integers, it will return whichever one is smaller in value.
+     * If the integers are equal in value, it will return the first one.
+     */
+    private int chooseLesser(int a, int b) {
+        return (a > b) ? b : a;
+    }
+    
+    /**
      * Returns true if the column identified by COLUMN is full.
      * @param column the column in question
      * @return whether or not the column is full (i.e. contains 7 pieces)
@@ -73,6 +159,16 @@ public class ReguBoard {
         if (interactivePiece.inFinalPosition()) {
             board[interactivePiece.finalLevel][interactivePiece.col] = interactivePiece; // add to the board
             isPieceFalling = false;
+            
+            // Check if the piece makes four-in-a-row
+            if (makesFour(interactivePiece)) {
+                // If so, the game is over!
+                Panels.currPanel.deactivate(); // deactivate the current panel...
+                Panels.layout.show(Panels.contentPanel, "mainMenu"); // go back to the main menu...
+                Panels.mainMenuPanel.activate(); // ACTIVATE the main menu...
+                Panels.currPanel = Panels.mainMenuPanel; // update the current panel...
+                return; // ...and we're done!
+            }
             
             // Create a new interactive piece; this one's in its final position (i.e. it is immobile)
             if (!isBoardFull()) {
