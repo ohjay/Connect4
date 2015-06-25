@@ -42,7 +42,7 @@ public class ReguBoard {
         
         // Check for vertical fours
         int i = chooseGreater(piece.finalLevel - 3, 0); // Initialize the vertical starting row
-        for (; i < chooseLesser(piece.finalLevel + 3, BOARD_LEN - 1); i++) {
+        for (; i < chooseLesser(piece.finalLevel + 4, BOARD_LEN); i++) {
             if (sameTeam(piece.color, board[i][piece.col])) {
                 count1++; // increment the vertical count
             } else count1 = 0;
@@ -53,7 +53,7 @@ public class ReguBoard {
         
         // Check for horizontal fours
         i = chooseGreater(piece.col - 3, 0);  // Initialize the horizontal starting column
-        for (count1 = 0; i < chooseLesser(piece.col + 3, BOARD_LEN - 1); i++) {
+        for (count1 = 0; i < chooseLesser(piece.col + 4, BOARD_LEN); i++) {
             if (sameTeam(piece.color, board[piece.finalLevel][i])) {
                 count1++; // increment the horizontal count
             } else count1 = 0;
