@@ -62,34 +62,31 @@ public class ReguBoard {
         }
         
         // Check for diagonal fours
-        int count2 = 0, count3 = 0, count4 = 0; // initializing some extra count variables
-        for (i = 0, count1 = 0; i < 4; i++) {
-            // Heading in a top-left direction
-            if (piece.finalLevel - i >= 0 && piece.col - i >= 0) {
-                if (sameTeam(piece.color, board[piece.finalLevel - i][piece.col - i])) count1++;
+        int count2 = 0; // initializing an extra count variable
+        for (i = -4, count1 = 0; i < 4; i++) {
+            // Heading from the top-left to the bottom-right
+            if (onBoard(piece.finalLevel + i) && onBoard(piece.col + i)) {
+                if (sameTeam(piece.color, board[piece.finalLevel + i][piece.col + i])) count1++;
                 else count1 = 0;
             }
             
-            // Heading in a bottom-left direction
-            if (piece.finalLevel - i >= 0 && piece.col + i < BOARD_LEN) {
-                if (sameTeam(piece.color, board[piece.finalLevel - i][piece.col + i])) count2++;
+            // Heading from the bottom-left to the top-right
+            if (onBoard(piece.finalLevel + i) && onBoard(piece.col - i)) {
+                if (sameTeam(piece.color, board[piece.finalLevel + i][piece.col - i])) count2++;
                 else count2 = 0;
             }
             
-            // Heading in a top-right direction
-            if (piece.finalLevel + i < BOARD_LEN && piece.col - i >= 0) {
-                if (sameTeam(piece.color, board[piece.finalLevel + i][piece.col - i])) count3++;
-                else count3 = 0;
-            }
-            
-            // Heading in a bottom-right direction
-            if (piece.finalLevel + i < BOARD_LEN && piece.col + i < BOARD_LEN) {
-                if (sameTeam(piece.color, board[piece.finalLevel + i][piece.col + i])) count4++;
-                else count4 = 0;
-            }
+            if (count1 >= 4 || count2 >= 4) return true;
         }
         
-        return (count1 == 4 || count2 == 4 || count3 == 4 || count4 == 4);
+        return false;
+    }
+    
+    /**
+     * Takes a generic coordinate (could be x or y) and determines if it's contained by the board.
+     */
+    private boolean onBoard(int coord) {
+        return coord >= 0 && coord < BOARD_LEN;
     }
     
     /**
@@ -180,7 +177,7 @@ public class ReguBoard {
         } else if (interactivePiece.getY() > TOP_OFFSET) {
             interactivePiece.translate(0, 3);
         } else {
-            interactivePiece.translate(0, 1);
+            interactivePiece.translate(0, 2);
         }
     }
     
