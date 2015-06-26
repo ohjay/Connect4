@@ -126,8 +126,8 @@ public class ReguBoard {
     /**
      * Returns the column to which the given x-coordinate is nearest.
      */
-    public static int getNearestCol(int x) {
-        return Math.round((x + Piece.WIDTH / 2 - L_OFFSET) / SQUARE_WIDTH);
+    public int getNearestCol(int x) {
+        return chooseLesser(6, Math.round((x + Piece.WIDTH / 2 - L_OFFSET) / SQUARE_WIDTH));
     }
     
     /**

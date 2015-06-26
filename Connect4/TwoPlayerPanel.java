@@ -23,7 +23,7 @@ public class TwoPlayerPanel extends ReguC4Panel {
          */
         public void mouseClicked(MouseEvent evt) {
             if (reguBoard.interactivePiece != null && !reguBoard.isPieceFalling) {
-                int nearestCol = ReguBoard.getNearestCol(MouseData.x);
+                int nearestCol = reguBoard.getNearestCol(MouseData.x);
                 if (!reguBoard.isColumnFull(nearestCol)) {
                     reguBoard.addToColumn(reguBoard.interactivePiece, nearestCol);
                 }
