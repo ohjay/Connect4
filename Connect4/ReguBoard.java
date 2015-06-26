@@ -85,14 +85,14 @@ public class ReguBoard {
     /**
      * Takes a generic coordinate (could be x or y) and determines if it's contained by the board.
      */
-    private boolean onBoard(int coord) {
+    private static boolean onBoard(int coord) {
         return coord >= 0 && coord < BOARD_LEN;
     }
     
     /**
      * Returns true if piece PIECE is on the team specified by COLOR.
      */
-    private boolean sameTeam(String color, Piece piece) {
+    private static boolean sameTeam(String color, Piece piece) {
         return piece != null && color.equals(piece.color);
     }
     
@@ -101,7 +101,7 @@ public class ReguBoard {
      * Given two integers, it will return whichever one is greater in value.
      * If the integers are equal in value, it will return the first one.
      */
-    private int chooseGreater(int a, int b) {
+    private static int chooseGreater(int a, int b) {
         return (b > a) ? b : a;
     }
     
@@ -110,7 +110,7 @@ public class ReguBoard {
      * Given two integers, it will return whichever one is smaller in value.
      * If the integers are equal in value, it will return the first one.
      */
-    private int chooseLesser(int a, int b) {
+    private static int chooseLesser(int a, int b) {
         return (a > b) ? b : a;
     }
     
@@ -126,7 +126,7 @@ public class ReguBoard {
     /**
      * Returns the column to which the given x-coordinate is nearest.
      */
-    public int getNearestCol(int x) {
+    public static int getNearestCol(int x) {
         return chooseLesser(6, Math.round((x + Piece.WIDTH / 2 - L_OFFSET) / SQUARE_WIDTH));
     }
     
