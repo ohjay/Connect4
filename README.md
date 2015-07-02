@@ -1,5 +1,5 @@
 # Connect4
-The classic game of Connect Four, enhanced with several modern modifications
+The classic game of Connect Four, enhanced with several modern modifications. 
 
 A work in a progress; currently playable only by compiling all of the source files and running the program through the main() method in the Connect4/Connect4 class. This was built originally as a proof to my friend that Connect Four is a solved game.
 
