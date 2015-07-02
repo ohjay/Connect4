@@ -78,11 +78,8 @@ public class Connect4 extends JApplet {
         window.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         window.setLocationRelativeTo(null);
         
-        // Panels.twoPlayerPanel.activate();
-        // Panels.currPanel = Panels.twoPlayerPanel;
         Panels.mainMenuPanel.activate();
         Panels.currPanel = Panels.mainMenuPanel;
-        
         window.setContentPane(Panels.contentPanel);
         window.setVisible(true);
     }

@@ -22,4 +22,10 @@ public class Images {
             mmVsHuman = new ImageIcon(Images.class.getResource("/images/mainMenuVsHuman.png")).getImage(),
             mmSpecial = new ImageIcon(Images.class.getResource("/images/mainMenuSpecialModes.png")).getImage(),
             mmBoards = new ImageIcon(Images.class.getResource("/images/mainMenuBoards.png")).getImage();
+    // VS Human menu images
+    static final Image vsHuReg = new ImageIcon(Images.class.getResource("/images/vsHuMenu.png")).getImage(),
+            vsHu1C = new ImageIcon(Images.class.getResource("/images/vsHuMen1C.png")).getImage(),
+            vsHu2C = new ImageIcon(Images.class.getResource("/images/vsHuMen2C.png")).getImage(),
+            backToMM1 = new ImageIcon(Images.class.getResource("/images/backToMM.png")).getImage(),
+            backToMM2 = new ImageIcon(Images.class.getResource("/images/backToMMH.png")).getImage();
 }

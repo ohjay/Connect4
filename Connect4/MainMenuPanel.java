@@ -36,18 +36,22 @@ public class MainMenuPanel extends MenuPanel {
                         Panels.layout.show(Panels.contentPanel, "vsCPUMenu");
                         Panels.vsCPUMenuPanel.activate();
                         Panels.currPanel = Panels.vsCPUMenuPanel;
+                        break;
                     case 2:
                         Panels.layout.show(Panels.contentPanel, "vsHumanMenu");
                         Panels.vsHumanMenuPanel.activate();
                         Panels.currPanel = Panels.vsHumanMenuPanel;
+                        break;
                     case 3:
                         Panels.layout.show(Panels.contentPanel, "specialMenu");
                         Panels.specialMenuPanel.activate();
                         Panels.currPanel = Panels.specialMenuPanel;
-                    case 4:
+                        break;
+                    default:
                         Panels.layout.show(Panels.contentPanel, "boardsMenu");
                         Panels.boardsMenuPanel.activate();
                         Panels.currPanel = Panels.boardsMenuPanel;
+                        break;
                 }
             }
         }
