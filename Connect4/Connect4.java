@@ -38,11 +38,6 @@ public class Connect4 extends JApplet {
         Panels.contentPanel.setLayout(new CardLayout());
         Panels.layout = (CardLayout) Panels.contentPanel.getLayout();
         
-        // THIS IS OUT OF PLACE: ONLY FOR FUNCTIONALITY TESTING
-        // I.E. CURRENTLY TESTING THE TWO-PLAYER PANEL
-        Panels.twoPlayerPanel = new TwoPlayerPanel();
-        Panels.contentPanel.add(Panels.twoPlayerPanel, "twoPlayer");
-        
         // Initialize menu panels
         Panels.mainMenuPanel = new MainMenuPanel();
         Panels.contentPanel.add(Panels.mainMenuPanel, "mainMenu");
@@ -60,9 +55,8 @@ public class Connect4 extends JApplet {
         Panels.contentPanel.add(Panels.easyPanel, "easy");
         Panels.solvedPanel = new SolvedPanel();
         Panels.contentPanel.add(Panels.solvedPanel, "solved");
-        
-        // TWO-PLAYER PANEL ORIGINALLY GOES HERE
-        
+        Panels.twoPlayerPanel = new TwoPlayerPanel();
+        Panels.contentPanel.add(Panels.twoPlayerPanel, "twoPlayer");
         Panels.warfarePanel = new WarfarePanel();
         Panels.contentPanel.add(Panels.warfarePanel, "warfare");
         Panels.fourByTwoPanel = new FourByTwoPanel();
@@ -84,8 +78,11 @@ public class Connect4 extends JApplet {
         window.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         window.setLocationRelativeTo(null);
         
-        Panels.twoPlayerPanel.activate();
-        Panels.currPanel = Panels.twoPlayerPanel;
+        // Panels.twoPlayerPanel.activate();
+        // Panels.currPanel = Panels.twoPlayerPanel;
+        Panels.mainMenuPanel.activate();
+        Panels.currPanel = Panels.mainMenuPanel;
+        
         window.setContentPane(Panels.contentPanel);
         window.setVisible(true);
     }

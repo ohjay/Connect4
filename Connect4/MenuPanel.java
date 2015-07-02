@@ -1,31 +1,20 @@
 package Connect4;
 
 import java.awt.Point;
+import java.awt.Image;
+import java.awt.Graphics;
+import java.awt.Graphics2D;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
-import java.awt.Image;
-import java.awt.event.MouseAdapter;
-import javax.swing.Timer;
 
-public abstract class MenuPanel extends KPanel implements ActionListener {
+public abstract class MenuPanel extends KPanel {
     protected Image[] menuImages;
-    private int imgIndex;
-    private Timer timer;
-    private MouseListener ml;
+    protected int imgIndex; // controls which menu image is currently being displayed
     
-    public void actionPerformed(ActionEvent evt) {
-        
-    }
-    
-    public void activate() {
-        
-    }
-    
-    public void deactivate() {
-        
-    }
-    
-    public class MouseListener extends MouseAdapter {
-        
+    @Override
+    public void paintComponent(Graphics g) {
+        super.paintComponent(g);
+        Graphics2D g2 = (Graphics2D) g;
+        g2.drawImage(menuImages[imgIndex], 0, 0, null);
     }
 }
