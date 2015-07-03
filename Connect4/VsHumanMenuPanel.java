@@ -2,8 +2,6 @@ package Connect4;
 
 import java.awt.Image;
 import java.awt.Rectangle;
-import java.awt.Graphics;
-import java.awt.Graphics2D;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 
@@ -52,15 +50,11 @@ public class VsHumanMenuPanel extends MenuPanel {
             int x = evt.getX();
             int y = evt.getY();
             
-            if (ONEC_RECT.intersects(x, y, 1, 1)) {
-                imgIndex = 2;
-            } else if (TWOC_RECT.intersects(x, y, 1, 1)) {
-                imgIndex = 3;
-            } else if (MM_RECT.intersects(x, y, 1, 1)) {
-                imgIndex = 1;
-            } else {
-                imgIndex = 0;
-            }
+            // Check if the cursor is currently hovering over any of the icons
+            if (ONEC_RECT.contains(x, y)) { imgIndex = 2; } 
+            else if (TWOC_RECT.contains(x, y)) { imgIndex = 3; } 
+            else if (MM_RECT.contains(x, y)) { imgIndex = 1; } 
+            else { imgIndex = 0; }
             
             repaint();
         }

@@ -27,4 +27,9 @@ public class Images {
             vsHu1C = new ImageIcon(Images.class.getResource("/images/vsHuMen1C.png")).getImage(),
             vsHu2C = new ImageIcon(Images.class.getResource("/images/vsHuMen2C.png")).getImage(),
             vsHuMM = new ImageIcon(Images.class.getResource("/images/vsHuMMH.png")).getImage();
+    // VS CPU menu images
+    static final Image vsCPUReg = new ImageIcon(Images.class.getResource("/images/vsCPUReg.png")).getImage(),
+            vsCPUEasy = new ImageIcon(Images.class.getResource("/images/vsCPUEasy.png")).getImage(),
+            vsCPUHard = new ImageIcon(Images.class.getResource("/images/vsCPUHard.png")).getImage(),
+            vsCPUMM = new ImageIcon(Images.class.getResource("/images/vsCPUMM.png")).getImage();
 }
