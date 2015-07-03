@@ -12,11 +12,11 @@ public abstract class ReguC4Panel extends KPanel {
     protected ReguBoard reguBoard;
     
     /**
-     * Constructs a regular Connect4 panel. 
-     * Subclasses should always define their own constructors and both reuse this behavior
-     * AND assign their own mouse listeners to the member variable MOUSE_LISTENER.
+     * Resets the regular Connect4 board in addition to the standard activation method.
      */
-    public ReguC4Panel() {
+    @Override
+    public void activate() {
+        super.activate();
         reguBoard = new ReguBoard();
     }
     

@@ -10,7 +10,6 @@ import java.awt.event.MouseEvent;
 public class TwoPlayerPanel extends ReguC4Panel {
     
     public TwoPlayerPanel() {
-        super();
         mouseListener = new TwoPlayerPMouseListener();
     }
     

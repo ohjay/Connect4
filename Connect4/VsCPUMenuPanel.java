@@ -7,7 +7,7 @@ import java.awt.event.MouseEvent;
 
 public class VsCPUMenuPanel extends MenuPanel {
     private static final int MM_X = 167, MM_Y = 115, MM_WIDTH = 269, MM_HEIGHT = 21,
-            EASY_X = 58, HARD_X = 328, REG_Y = 296, EXT_Y = 171, SQ_WIDTH = 219,
+            EASY_X = 58, HARD_X = 328, REG_Y = 298, EXT_Y = 171, SQ_WIDTH = 219,
             EXT_HEIGHT = 343; // ext = extended
     private static final Rectangle MM_RECT = new Rectangle(MM_X, MM_Y, MM_WIDTH, MM_HEIGHT),
             EASY_REG_RECT = new Rectangle(EASY_X, REG_Y, SQ_WIDTH, SQ_WIDTH),
