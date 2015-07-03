@@ -15,28 +15,14 @@ import java.awt.event.MouseEvent;
  */
 public class VsHumanMenuPanel extends MenuPanel {
     private static final int ONEC_LEFT_X = 48, ONEC_TOP_Y = 168, TWOC_TOP_Y = 378, C_WIDTH = 555, 
-            C_HEIGHT = 120, MM_X = 163, MM_Y = 101, MM_WIDTH = 267, MM_HEIGHT = 20;
+            C_HEIGHT = 120, MM_X = 159, MM_Y = 97, MM_WIDTH = 269, MM_HEIGHT = 22;
     private static final Rectangle ONEC_RECT = new Rectangle(ONEC_LEFT_X, ONEC_TOP_Y, C_WIDTH, C_HEIGHT),
             TWOC_RECT = new Rectangle(0, TWOC_TOP_Y, C_WIDTH, C_HEIGHT),
             MM_RECT = new Rectangle(MM_X + 6, MM_Y + 7, MM_WIDTH, MM_HEIGHT);
-    private boolean isMMHighlighted;
     
     public VsHumanMenuPanel() {
-        menuImages = new Image[] { Images.vsHuReg, Images.vsHu1C, Images.vsHu2C };
+        menuImages = new Image[] { Images.vsHuReg, Images.vsHuMM, Images.vsHu1C, Images.vsHu2C };
         mouseListener = new VsHuMenMouseListener();
-    }
-    
-    @Override
-    public void activate() {
-        super.activate();
-        isMMHighlighted = false;
-    }
-    
-    @Override
-    public void paintComponent(Graphics g) {
-        Graphics2D g2 = (Graphics2D) g;
-        g2.drawImage(menuImages[imgIndex], 0, 0, null);
-        g2.drawImage((isMMHighlighted) ? Images.backToMM2 : Images.backToMM1, MM_X, MM_Y, null);
     }
     
     public class VsHuMenMouseListener extends MouseAdapter {
@@ -46,15 +32,16 @@ public class VsHumanMenuPanel extends MenuPanel {
         public void mouseClicked(MouseEvent evt) {
             if (imgIndex != 0) {
                 Panels.currPanel.deactivate();
-                Panels.layout.show(Panels.contentPanel, "twoPlayer");
-                Panels.twoPlayerPanel.activate();
-                Panels.currPanel = Panels.twoPlayerPanel;
-            } else if (isMMHighlighted) {
-                Panels.currPanel.deactivate();
-                Panels.layout.show(Panels.contentPanel, "mainMenu");
-                Panels.mainMenuPanel.activate();
-                Panels.currPanel = Panels.mainMenuPanel;
-            }
+                if (imgIndex == 1) { // the user wants to go to the main menu
+                    Panels.layout.show(Panels.contentPanel, "mainMenu");
+                    Panels.mainMenuPanel.activate();
+                    Panels.currPanel = Panels.mainMenuPanel;
+                } else { // it's game time
+                    Panels.layout.show(Panels.contentPanel, "twoPlayer");
+                    Panels.twoPlayerPanel.activate();
+                    Panels.currPanel = Panels.twoPlayerPanel;
+                }
+            } 
         }
         
         /**
@@ -66,14 +53,13 @@ public class VsHumanMenuPanel extends MenuPanel {
             int y = evt.getY();
             
             if (ONEC_RECT.intersects(x, y, 1, 1)) {
-                imgIndex = 1;
-            } else if (TWOC_RECT.intersects(x, y, 1, 1)) {
                 imgIndex = 2;
+            } else if (TWOC_RECT.intersects(x, y, 1, 1)) {
+                imgIndex = 3;
             } else if (MM_RECT.intersects(x, y, 1, 1)) {
-                isMMHighlighted = true;
+                imgIndex = 1;
             } else {
                 imgIndex = 0;
-                isMMHighlighted = false;
             }
             
             repaint();

@@ -26,6 +26,5 @@ public class Images {
     static final Image vsHuReg = new ImageIcon(Images.class.getResource("/images/vsHuMenu.png")).getImage(),
             vsHu1C = new ImageIcon(Images.class.getResource("/images/vsHuMen1C.png")).getImage(),
             vsHu2C = new ImageIcon(Images.class.getResource("/images/vsHuMen2C.png")).getImage(),
-            backToMM1 = new ImageIcon(Images.class.getResource("/images/backToMM.png")).getImage(),
-            backToMM2 = new ImageIcon(Images.class.getResource("/images/backToMMH.png")).getImage();
+            vsHuMM = new ImageIcon(Images.class.getResource("/images/vsHuMMH.png")).getImage();
 }
