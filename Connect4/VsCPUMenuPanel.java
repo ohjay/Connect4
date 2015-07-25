@@ -53,8 +53,8 @@ public class VsCPUMenuPanel extends MenuPanel {
             int x = evt.getX();
             int y = evt.getY();
             
-            if (EASY_REG_RECT.contains(x, y)) { imgIndex = 1; } 
-            else if (HARD_REG_RECT.contains(x, y)) { imgIndex = 2; }
+            if (EASY_EXT_RECT.contains(x, y)) { imgIndex = 1; } 
+            else if (HARD_EXT_RECT.contains(x, y)) { imgIndex = 2; }
             else if (MM_RECT.contains(x, y)) { imgIndex = 3; }
             else if (!EASY_EXT_RECT.contains(x, y) && !HARD_EXT_RECT.contains(x, y)) {
                 imgIndex = 0;
