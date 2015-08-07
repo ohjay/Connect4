@@ -160,18 +160,20 @@ public class ReguBoard {
             // Check if the piece makes four-in-a-row
             if (makesFour(interactivePiece)) {
                 // If so, the game is over!
-                Panels.currPanel.deactivate(); // deactivate the current panel...
-                Panels.layout.show(Panels.contentPanel, "mainMenu"); // go back to the main menu...
-                Panels.mainMenuPanel.activate(); // ACTIVATE the main menu...
-                Panels.currPanel = Panels.mainMenuPanel; // update the current panel...
-                return; // ...and we're done!
+                Connect4.returnToMainMenu();
+                return;
             }
             
             // Create a new interactive piece; this one's in its final position (i.e. it is immobile)
             if (!isBoardFull()) {
                 currColor = (currColor.equals("red")) ? "yellow" : "red";
                 interactivePiece = new Piece(currColor, MouseData.x);
-            } else interactivePiece = null;
+            } else {
+                // Game's over guys, let's go home
+                interactivePiece = null;
+                Connect4.returnToMainMenu();
+                return;
+            }
         } else if (interactivePiece.getY() > TOP_OFFSET + SQUARE_WIDTH) {
             interactivePiece.translate(0, 4);
         } else if (interactivePiece.getY() > TOP_OFFSET) {

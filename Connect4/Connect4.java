@@ -83,4 +83,15 @@ public class Connect4 extends JApplet {
         window.setContentPane(Panels.contentPanel);
         window.setVisible(true);
     }
+    
+    /**
+     * Returns the game to the main menu (from the current panel, which is presumably
+     * not the main menu).
+     */
+    static void returnToMainMenu() {
+        Panels.currPanel.deactivate(); // deactivate the current panel...
+        Panels.layout.show(Panels.contentPanel, "mainMenu"); // go back to the main menu...
+        Panels.mainMenuPanel.activate(); // ACTIVATE the main menu...
+        Panels.currPanel = Panels.mainMenuPanel; // aaand update the current panel
+    }
 }
