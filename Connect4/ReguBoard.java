@@ -189,7 +189,7 @@ public class ReguBoard {
      */
     public void draw(Graphics2D g2) {
         // First, draw the background
-        g2.drawImage(Images.goldBackground, 0, 0, null);
+        g2.drawImage(Images.goldBackground6, 0, 0, null);
         
         // Draw all of the pieces
         for (Piece[] pieceArr : board) {
