@@ -166,7 +166,7 @@ public class ReguBoard {
             
             // Create a new interactive piece; this one's in its final position (i.e. it is immobile)
             if (!isBoardFull()) {
-                currColor = (currColor.equals("red")) ? "yellow" : "red";
+                currColor = (currColor.equals("red")) ? "black" : "red";
                 interactivePiece = new Piece(currColor, MouseData.x);
             } else {
                 // Game's over guys, let's go home
@@ -188,6 +188,9 @@ public class ReguBoard {
      * @param g2 a Graphics2D object to be used to drawing/painting/whatever you want to call it
      */
     public void draw(Graphics2D g2) {
+        // First, draw the background
+        g2.drawImage(Images.goldBackground, 0, 0, null);
+        
         // Draw all of the pieces
         for (Piece[] pieceArr : board) {
             for (Piece piece : pieceArr) {

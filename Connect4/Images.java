@@ -15,7 +15,13 @@ public class Images {
             redPiece = new ImageIcon(Images.class.getResource("/images/c4RedPiece.png")).getImage(),
             yellowPiece = new ImageIcon(Images.class.getResource("/images/c4YellowPiece.png")).getImage(),
             greenPiece = new ImageIcon(Images.class.getResource("/images/c4GreenPiece.png")).getImage(),
-            magentaPiece = new ImageIcon(Images.class.getResource("/images/c4MagentaPiece.png")).getImage();
+            magentaPiece = new ImageIcon(Images.class.getResource("/images/c4MagentaPiece.png")).getImage(),
+            purplePiece = new ImageIcon(Images.class.getResource("/images/c4PurplePiece.png")).getImage(),
+            blackPiece = new ImageIcon(Images.class.getResource("/images/c4BlackPiece.png")).getImage(),
+            cyanPiece = new ImageIcon(Images.class.getResource("/images/c4CyanPiece.png")).getImage(),
+            grayPiece = new ImageIcon(Images.class.getResource("/images/c4GrayPiece.png")).getImage(),
+            lightGreenPiece = new ImageIcon(Images.class.getResource("/images/c4LightGreenPiece.png")).getImage(),
+            goldBackground = new ImageIcon(Images.class.getResource("/images/gold_bg6.png")).getImage();
     // Main menu images
     static final Image mmReg = new ImageIcon(Images.class.getResource("/images/mainMenuRegular.png")).getImage(),
             mmVsCPU = new ImageIcon(Images.class.getResource("/images/mainMenuVsCPU.png")).getImage(),

@@ -33,8 +33,18 @@ public class Piece {
                 return Images.redPiece;
             case "yellow":
                 return Images.yellowPiece;
+            case "purple":
+                return Images.purplePiece;
             case "green":
                 return Images.greenPiece;
+            case "black":
+                return Images.blackPiece;
+            case "cyan":
+                return Images.cyanPiece;
+            case "gray":
+                return Images.grayPiece;
+            case "lightGreen":
+                return Images.lightGreenPiece;
             default:
                 return Images.magentaPiece;
         }
