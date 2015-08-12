@@ -21,7 +21,12 @@ public class Images {
             cyanPiece = new ImageIcon(Images.class.getResource("/images/c4CyanPiece.png")).getImage(),
             grayPiece = new ImageIcon(Images.class.getResource("/images/c4GrayPiece.png")).getImage(),
             lightGreenPiece = new ImageIcon(Images.class.getResource("/images/c4LightGreenPiece.png")).getImage(),
-            goldBackground6 = new ImageIcon(Images.class.getResource("/images/gold_bg6.png")).getImage();
+            goldBackground6 = new ImageIcon(Images.class.getResource("/images/gold_bg6.png")).getImage(),
+            goldBackground5 = new ImageIcon(Images.class.getResource("/images/gold_bg5.png")).getImage(),
+            goldBackground4 = new ImageIcon(Images.class.getResource("/images/gold_bg4.png")).getImage(),
+            goldBackground3 = new ImageIcon(Images.class.getResource("/images/gold_bg3.png")).getImage(),
+            goldBackground2 = new ImageIcon(Images.class.getResource("/images/gold_bg2.png")).getImage(),
+            goldBackground1 = new ImageIcon(Images.class.getResource("/images/gold_bg1.png")).getImage();
     // Main menu images
     static final Image mmReg = new ImageIcon(Images.class.getResource("/images/mainMenuRegular.png")).getImage(),
             mmVsCPU = new ImageIcon(Images.class.getResource("/images/mainMenuVsCPU.png")).getImage(),

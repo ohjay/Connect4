@@ -3,13 +3,13 @@ package Connect4;
 import java.awt.Graphics2D;
 
 /**
- * A regular connect four board; that is, one that is 7x7.
+ * A regular connect four board; that is, one that is 7x6.
  * @author Owen Jow
  */
 public class ReguBoard {
-    static final int BOARD_LEN = 7, L_OFFSET = 87, TOP_OFFSET = 80, 
+    static final int BOARD_WIDTH = 7, BOARD_HEIGHT = 6, L_OFFSET = 87, TOP_OFFSET = 80,
             SQUARE_WIDTH = 60, PIECE_START_HEIGHT = 10;
-    private Piece[][] board = new Piece[BOARD_LEN][BOARD_LEN];
+    private Piece[][] board = new Piece[BOARD_HEIGHT][BOARD_WIDTH]; // row x col (Y-AXIS x X-AXIS)
     private int numPieces;
     private String currColor = "red";
     Piece interactivePiece = new Piece(currColor, MouseData.x); // only 1 piece controlled at once
@@ -24,11 +24,11 @@ public class ReguBoard {
     }
     
     /**
-     * Returns true if the board is filled; that is, if it contains 49 pieces.
+     * Returns true if the board is filled; that is, if it contains 42 pieces.
      * @return whether or not the board is full
      */
     public boolean isBoardFull() {
-        return numPieces >= 49;
+        return numPieces >= 42;
     }
     
     /**
@@ -42,7 +42,7 @@ public class ReguBoard {
         
         // Check for vertical fours
         int i = chooseGreater(piece.finalLevel - 3, 0); // Initialize the vertical starting row
-        for (; i < chooseLesser(piece.finalLevel + 4, BOARD_LEN); i++) {
+        for (; i < chooseLesser(piece.finalLevel + 4, BOARD_HEIGHT); i++) {
             if (sameTeam(piece.color, board[i][piece.col])) {
                 count1++; // increment the vertical count
             } else count1 = 0;
@@ -53,7 +53,7 @@ public class ReguBoard {
         
         // Check for horizontal fours
         i = chooseGreater(piece.col - 3, 0);  // Initialize the horizontal starting column
-        for (count1 = 0; i < chooseLesser(piece.col + 4, BOARD_LEN); i++) {
+        for (count1 = 0; i < chooseLesser(piece.col + 4, BOARD_WIDTH); i++) {
             if (sameTeam(piece.color, board[piece.finalLevel][i])) {
                 count1++; // increment the horizontal count
             } else count1 = 0;
@@ -65,13 +65,13 @@ public class ReguBoard {
         int count2 = 0; // initializing an extra count variable
         for (i = -4, count1 = 0; i < 4; i++) {
             // Heading from the top-left to the bottom-right
-            if (onBoard(piece.finalLevel + i) && onBoard(piece.col + i)) {
+            if (onBoard(piece.finalLevel + i, piece.col + i)) {
                 if (sameTeam(piece.color, board[piece.finalLevel + i][piece.col + i])) count1++;
                 else count1 = 0;
             }
             
             // Heading from the bottom-left to the top-right
-            if (onBoard(piece.finalLevel + i) && onBoard(piece.col - i)) {
+            if (onBoard(piece.finalLevel + i, piece.col - i)) {
                 if (sameTeam(piece.color, board[piece.finalLevel + i][piece.col - i])) count2++;
                 else count2 = 0;
             }
@@ -83,10 +83,12 @@ public class ReguBoard {
     }
     
     /**
-     * Takes a generic coordinate (could be x or y) and determines if it's contained by the board.
+     * Takes a set of coordinates (r, c) and determines if it's contained by the board.
+     * @param r the row (i.e. the level on the board; think y-axis)
+     * @param c the column (think x-axis)
      */
-    private static boolean onBoard(int coord) {
-        return coord >= 0 && coord < BOARD_LEN;
+    private static boolean onBoard(int r, int c) {
+        return (r >= 0 && r < BOARD_HEIGHT) && (c >= 0 && c < BOARD_WIDTH);
     }
     
     /**
@@ -138,7 +140,7 @@ public class ReguBoard {
      */
     public void addToColumn(Piece piece, int column) {
         int i = -1;
-        while (i < BOARD_LEN - 1 && board[i + 1][column] == null) i++;
+        while (i < BOARD_HEIGHT - 1 && board[i + 1][column] == null) i++;
         piece.finalLevel = i; // set the piece's final level as the lowermost open row
         piece.col = column;
         piece.setX(L_OFFSET + column * SQUARE_WIDTH + 2);
@@ -186,10 +188,30 @@ public class ReguBoard {
     /**
      * Draws the board and all of its pieces behind it.
      * @param g2 a Graphics2D object to be used to drawing/painting/whatever you want to call it
+     * @param bgId the background identifier (this should be an integer from 1-6)
      */
-    public void draw(Graphics2D g2) {
+    public void draw(Graphics2D g2, int bgId) {
         // First, draw the background
-        g2.drawImage(Images.goldBackground6, 0, 0, null);
+        switch (bgId) {
+            case 6:
+                g2.drawImage(Images.goldBackground6, 0, 0, null);
+                break;
+            case 5:
+                g2.drawImage(Images.goldBackground5, 0, 0, null);
+                break;
+            case 4:
+                g2.drawImage(Images.goldBackground4, 0, 0, null);
+                break;
+            case 3:
+                g2.drawImage(Images.goldBackground3, 0, 0, null);
+                break;
+            case 2:
+                g2.drawImage(Images.goldBackground2, 0, 0, null);
+                break;
+            default:
+                g2.drawImage(Images.goldBackground1, 0, 0, null);
+                break;
+        }
         
         // Draw all of the pieces
         for (Piece[] pieceArr : board) {
@@ -206,8 +228,8 @@ public class ReguBoard {
         }
         
         // Then, draw the board over them so it appears as if the pieces are inside the board
-        for (int i = 0; i < BOARD_LEN; i++) { // we have to draw 7 rows' worth of squares...
-            for (int j = 0; j < BOARD_LEN; j++) { // ...and 7 columns' worth of squares
+        for (int i = 0; i < BOARD_WIDTH; i++) { // we have to draw 7 rows' worth of squares...
+            for (int j = 0; j < BOARD_HEIGHT; j++) { // ...and 6 columns' worth of squares
                 g2.drawImage(Images.square, L_OFFSET + i * SQUARE_WIDTH, 
                         TOP_OFFSET + j * SQUARE_WIDTH, null);
             }
