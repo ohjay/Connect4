@@ -9,11 +9,30 @@ import java.awt.Graphics2D;
 public class ReguBoard {
     static final int BOARD_WIDTH = 7, BOARD_HEIGHT = 6, L_OFFSET = 87, TOP_OFFSET = 80,
             SQUARE_WIDTH = 60, PIECE_START_HEIGHT = 10;
-    private Piece[][] board = new Piece[BOARD_HEIGHT][BOARD_WIDTH]; // row x col (Y-AXIS x X-AXIS)
+    private Piece[][] board; // row x col (Y-AXIS x X-AXIS)
     private int numPieces;
-    private String currColor = "red";
-    Piece interactivePiece = new Piece(currColor, MouseData.x); // only 1 piece controlled at once
+    private String currColor;
+    Piece interactivePiece; // only 1 piece controlled at once
     boolean isPieceFalling;
+    
+    /**
+     * Default constructor for an empty 7x6 board.
+     */
+    public ReguBoard() {
+        board = new Piece[BOARD_HEIGHT][BOARD_WIDTH];
+        currColor = "red";
+        interactivePiece = new Piece(currColor, MouseData.x);
+    }
+    
+    /**
+     * Initializes the board with some specific configuration and current player.
+     */
+    public ReguBoard(Piece[][] board, int numPieces, String currColor) {
+        this.board = board;
+        this.numPieces = numPieces;
+        this.currColor = currColor;
+        interactivePiece = new Piece(currColor, MouseData.x);
+    }
     
     /**
      * Returns the board in its present condition.
@@ -21,6 +40,43 @@ public class ReguBoard {
      */
     public Piece[][] getBoard() {
         return board;
+    }
+    
+    /**
+     * Returns a clone of the board in its current condition.
+     * Modifications to the cloned board will not affect the original.
+     */
+    public Piece[][] cloneBoard() {
+        Piece[][] clone = new Piece[BOARD_HEIGHT][BOARD_WIDTH];
+        for (int i = 0; i < board.length; i++) {
+            for (int j = 0; j < board.length; j++) {
+                clone[i][j] = board[i][j];
+            }
+        }
+        
+        return clone;
+    }
+    
+    /**
+     * Returns the color of the player that is next to play.
+     */
+    public String getCurrPlayer() {
+        return currColor;
+    }
+    
+    /**
+     * Returns the number of pieces on the present board.
+     */
+    public int getNumPieces() {
+        return numPieces;
+    }
+    
+    /**
+     * Returns the color of the player whose turn it isn't.
+     * For example, if it were red's turn, this method would return "black".
+     */
+    public String otherPlayer() {
+        return currColor.equals("red") ? "black" : "red";
     }
     
     /**
@@ -133,15 +189,23 @@ public class ReguBoard {
     }
     
     /**
+     * Returns the lowermost open row in the column COLUMN.
+     * @param column an integer from 0-6
+     */
+    public int lowestOpenRow(int column) {
+        int i = -1;
+        while (i < BOARD_HEIGHT - 1 && board[i + 1][column] == null) i++;
+        return i;
+    }
+    
+    /**
      * Adds piece PIECE to column COLUMN.
      * Assumes that the column is not already full, and that there is no piece falling already.
      * @param piece the piece to be added
      * @param column the column to be added to
      */
     public void addToColumn(Piece piece, int column) {
-        int i = -1;
-        while (i < BOARD_HEIGHT - 1 && board[i + 1][column] == null) i++;
-        piece.finalLevel = i; // set the piece's final level as the lowermost open row
+        piece.finalLevel = lowestOpenRow(column);
         piece.col = column;
         piece.setX(L_OFFSET + column * SQUARE_WIDTH + 2);
         numPieces++; // increment the total number of pieces

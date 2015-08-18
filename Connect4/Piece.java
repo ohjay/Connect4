@@ -25,6 +25,17 @@ public class Piece {
     }
     
     /**
+     * The same as the above, except that this constructor specifies a final level
+     * and immediately sets the piece to reside at that level.
+     */
+    public Piece(String color, int x, int fLevel) {
+        this.color = color;
+        this.position = new Point(x, fLevel);
+        this.col = x;
+        this.finalLevel = fLevel;
+    }
+    
+    /**
      * Returns the piece's associated image, based on the nature of its color attribute.
      */
     public Image getImage() {

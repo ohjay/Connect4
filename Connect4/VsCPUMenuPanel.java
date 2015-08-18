@@ -21,7 +21,7 @@ public class VsCPUMenuPanel extends MenuPanel {
         mouseListener = new VsCPUMouseListener();
     }
     
-    public class VsCPUMouseListener extends MouseAdapter {
+    class VsCPUMouseListener extends MouseAdapter {
         /**
          * Enters either a game against an easy computer, a game against a hard computer, 
          * or the main menu.

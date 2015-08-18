@@ -17,13 +17,13 @@ public abstract class KPanel extends JPanel implements ActionListener {
     
     public void actionPerformed(ActionEvent evt) {
         /* Override this if you want anything to happen regularly! */
-        requestFocus();
     }
     
     /**
      * Activates this panel, adding mouse listeners and starting the timer.
      */
     public void activate() {
+        requestFocus();
         addMouseListener(mouseListener);
         addMouseMotionListener(mouseListener);
         timer = new Timer(1, this);
