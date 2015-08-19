@@ -3,7 +3,6 @@ package Connect4;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.ActionEvent;
-import java.util.Arrays;
 
 /**
  * The panel in which a user plays Connect4 against a computer of HARD difficulty.
@@ -25,7 +24,7 @@ public class SolvedPanel extends ReguC4Panel {
         } else if (reguBoard.getCurrPlayer().equals(computerColor)) {
             listenerEnabled = false;
             // Run the minimax algorithm, which will update computerMove
-            minimax(reguBoard, 0, null);
+            minimax(reguBoard, 0, null, Integer.MIN_VALUE, Integer.MAX_VALUE);
             reguBoard.addToColumn(reguBoard.interactivePiece, computerMove);
         } else {
             listenerEnabled = true;
@@ -70,6 +69,7 @@ public class SolvedPanel extends ReguC4Panel {
     
     private String computerColor = "black";
     private int computerMove; // the computer's next move, determined by the algorithm below
+    private int maxDepth = 10;
     
     /**
      * Evaluates all game possibilities with the minimax algorithm and returns the computer's 
@@ -81,9 +81,11 @@ public class SolvedPanel extends ReguC4Panel {
      * @param board the board over which the algorithm is being run
      * @param depth the number of turns (/current recursive depth)
      * @param prevPiece the piece that was previously played
+     * @param alpha the maximum score that the computer is guaranteed to get
+     * @param beta the minimum score that the player is guaranteed to get
      * @return the column in which the computer should play next (as an integer from 0-6)
      */
-    public int minimax(ReguBoard board, int depth, Piece prevPiece) {
+    public int minimax(ReguBoard board, int depth, Piece prevPiece, int alpha, int beta) {
         // Heuristic scoring
         if (prevPiece != null && board.makesFour(prevPiece)) {
             if (prevPiece.color.equals(computerColor)) {
@@ -95,80 +97,211 @@ public class SolvedPanel extends ReguC4Panel {
             }
         } else if (board.isBoardFull()) {
             return 0; // heuristic score for a draw
+        } else if (depth == maxDepth) { // if we go any farther, we'll be in recursive Limbo forever
+            return heuristicEval(board);
         }
         
         // The game isn't over, so we'll continue the recursion
-        int[] scores = new int[7]; // scores for each of the 7 potential moves
-        for (int c = ReguBoard.BOARD_WIDTH - 1; c >= 0; c--) {
-            if (!board.isColumnFull(c)) { // if a column's not full, then it's a possible move
-                // Create a piece for the computer to [theoretically] place
-                int lowRow = board.lowestOpenRow(c);
-                Piece p = new Piece(board.getCurrPlayer(), c, lowRow);
-                
-                // Simulate the new board configuration
-                Piece[][] newBoard = board.cloneBoard();
-                newBoard[lowRow][c] = p;
-                
-                // Add the score for this move to the scores array
-                scores[c] = minimax(new ReguBoard(newBoard, board.getNumPieces() + 1, 
-                        board.otherPlayer()), depth + 1, p);
-            } else {
-                scores[c] = Integer.MIN_VALUE;
-            }
-        }
-        
-        // Min/max selection
         if (board.getCurrPlayer().equals(computerColor)) {
             // Since it's the computer's turn, we want the MAX heuristic score
-            computerMove = maxValueIndex(scores);
-            return scores[computerMove];
+            int maxScore = Integer.MIN_VALUE; 
+            for (int c = ReguBoard.BOARD_WIDTH - 1; c >= 0; c--) {
+                if (!board.isColumnFull(c)) { // if a column's not full, then it's a possible move
+                    // Create a piece for the computer to [theoretically] place
+                    int lowRow = board.lowestOpenRow(c);
+                    Piece p = new Piece(board.getCurrPlayer(), c, lowRow);
+                    
+                    // Simulate the new board configuration
+                    Piece[][] newBoard = board.cloneBoard();
+                    newBoard[lowRow][c] = p;
+                    ReguBoard b = new ReguBoard(newBoard, board.getNumPieces() + 1, board.otherPlayer());
+                    
+                    // Check if the move yields the best score we've seen so far
+                    int score = minimax(b, depth + 1, p, alpha, beta);
+                    if (score > maxScore) {
+                        maxScore = score;
+                        computerMove = c;
+                        
+                        // Alpha-beta pruning (alpha cutoff)
+                        alpha = Math.max(alpha, maxScore);
+                        if (beta <= alpha) { break; }
+                    }
+                }
+            }
+            
+            return maxScore;
         } else {
-            // As the computer, we want to MINimize the score for the player
-            computerMove = minValueIndex(scores);
-            return scores[computerMove];
+            // It's the player's turn, whose score we want to MINimize
+            int minScore = Integer.MAX_VALUE;
+            for (int c = ReguBoard.BOARD_WIDTH - 1; c >= 0; c--) {
+                if (!board.isColumnFull(c)) { // if a column's not full, then it's a possible move
+                    // Create a piece for the computer to [theoretically] place
+                    int lowRow = board.lowestOpenRow(c);
+                    Piece p = new Piece(board.getCurrPlayer(), c, lowRow);
+                
+                    // Simulate the new board configuration
+                    Piece[][] newBoard = board.cloneBoard();
+                    newBoard[lowRow][c] = p;
+                    ReguBoard b = new ReguBoard(newBoard, board.getNumPieces() + 1, board.otherPlayer());
+                
+                    int score = minimax(b, depth + 1, p, alpha, beta);
+                    if (score < minScore) {
+                        minScore = score;
+                        computerMove = c;
+                        
+                        // Cut off fruitless subtrees (beta cutoff)
+                        beta = Math.min(beta, minScore);
+                        if (beta <= alpha) { break; }
+                    }
+                }
+            }
+            
+            return minScore;
         }
     }
     
     /**
-     * Returns the index of the maximum value in the integer array ARR.
-     * @param the array to be considered
-     * @return array index of the max value
+     * Heuristically evalutes a Connect4 board and assigns to it a score 
+     * representing the strength of the computer's position. [This is the 
+     * value that will be returned.]
+     * In order to quantify positional strength, this method will take into account
+     * the number of connected threes and twos for each side. We will assume
+     * that there exist no four-in-a-rows for either player.
+     * @param board the Connect4 board to evaluate
+     * @return a score heuristic
      */
-    private static int maxValueIndex(int[] arr) {
-        // Initial values will correspond to the last item in the array
-        int maxIndex = arr.length - 1;
-        int maxValue = arr[maxIndex];
+    public int heuristicEval(ReguBoard board) {
+        int heuristicScore = 0; // the total score
         
-        int value; // in order to cut down on the number of array references
-        for (int i = maxIndex - 1; i >= 0; i--) { // descend backward just to be cool
-            value = arr[i];
-            if (value > maxValue) {
-                maxIndex = i;
-                maxValue = value;
+        Piece[][] boardArr = board.getBoard();
+        int height = ReguBoard.BOARD_HEIGHT, width = ReguBoard.BOARD_WIDTH;
+        String oneColor = "", twoColor = ""; // the color of length 1/2 connected chains
+        
+        // Check for vertical threes and twos
+        for (int c = 0; c < width; c++) {
+            for (int r = height - 1; r >= 1; r--) { // top row is irrelevant
+                if (boardArr[r][c] == null) {
+                    if (!twoColor.isEmpty()) {
+                        // Connect 2, with potential
+                        heuristicScore += (twoColor.equals(computerColor)) ? 2 : -2;
+                    } 
+                    
+                    oneColor = ""; twoColor = ""; // reset values
+                    break; 
+                } else if (twoColor.equals(boardArr[r][c].color)) {
+                    if (boardArr[r - 1][c] == null) {
+                        // Connect 3, with potential
+                        heuristicScore += (twoColor.equals(computerColor)) ? 5 : -5;
+                    } else {
+                        // Connect 3 nullified by the opposing side
+                        heuristicScore += (twoColor.equals(computerColor)) ? -7 : 7;
+                    }
+                    oneColor = ""; twoColor = "";
+                    break;
+                } else if (oneColor.equals(boardArr[r][c].color)) {
+                    // Connect 2... so far
+                    twoColor = oneColor;
+                    oneColor = "";
+                } else {
+                    // The chain was broken by the opposite color
+                    if (!twoColor.isEmpty()) {
+                        // Give the breaker a score bonus!
+                        heuristicScore += (twoColor.equals(computerColor)) ? -5 : 5;
+                        twoColor = "";
+                    } else if (!oneColor.isEmpty()) {
+                        heuristicScore += (oneColor.equals(computerColor)) ? -3 : 3;
+                    }
+                    oneColor = boardArr[r][c].color;
+                }
+            }
+            
+            oneColor = ""; twoColor = ""; // resetting these for the next loop iteration
+        }
+        
+        // Check for horizontal threes and twos [also give bonuses for each column]
+        for (int r = height - 1; r >= 0; r--) {
+            for (int c = 0; c < width; c++) {
+                if (boardArr[r][c] == null) {
+                    if (!twoColor.isEmpty()) {
+                        // There were two pieces connected (with potential)
+                        heuristicScore += (twoColor.equals(computerColor)) ? 2 : -2;
+                    }
+                    oneColor = ""; twoColor = "";
+                } else {
+                    // Add in a bonus for each piece (we'll give more points to pieces near the center)
+                    if (boardArr[r][c] != null) {
+                        heuristicScore += (twoColor.equals(computerColor)) ? 
+                                4 - Math.abs(3 - c) : -4 + Math.abs(3 - c);
+                    }
+                    
+                    if (boardArr[r][c].color.equals(twoColor)) {
+                        // We have a three in a row
+                        if ((c > 2 && boardArr[r][c - 3] == null) || (c < 6 && boardArr[r][c + 1] == null)) {
+                            // ...and it has potential!
+                            heuristicScore += (twoColor.equals(computerColor)) ? 5 : -5;
+                        } else if ((c > 2 && boardArr[r][c - 3] != null) || (c < 6 && boardArr[r][c + 1] != null)) {
+                            // Combo breaker :/ ...still, good for one side!
+                            heuristicScore += (twoColor.equals(computerColor)) ? -7 : 7;
+                        }
+                        twoColor = "";
+                    } else if (boardArr[r][c].color.equals(oneColor)) {
+                        // So far we have two in a row
+                        twoColor = oneColor;
+                        oneColor = "";
+                    } else {
+                        // Chain broken by the opposing color!
+                        if (!twoColor.isEmpty()) { // assign some bonuses
+                            heuristicScore += (twoColor.equals(computerColor)) ? -5 : 5;
+                        } else if (!oneColor.isEmpty()) {
+                            heuristicScore += (oneColor.equals(computerColor)) ? -3 : 3;
+                        }
+                        
+                        if (c > 2 && !twoColor.isEmpty() && boardArr[r][c - 3] == null) {
+                            // There was a Connect 2
+                            heuristicScore += (twoColor.equals(computerColor)) ? 2 : -2;
+                            twoColor = "";
+                        }
+                    
+                        oneColor = boardArr[r][c].color;
+                    }
+                }
+            }
+            
+            // Make sure that there wasn't a far-right Connect 2 with potential
+            if (!twoColor.isEmpty() && boardArr[r][4] == null) {
+                // ...and there was!
+                heuristicScore += (twoColor.equals(computerColor)) ? 2 : -2;
+            }
+            
+            oneColor = ""; twoColor = "";
+        }
+        
+        // Check for diagonal threes (note: threes only!)
+        for (int c = 0; c < 4; c++) {
+            String origColor; // the color of the first piece
+            for (int r = 3; r >= 0; r--) {
+                if (boardArr[r][c] == null) { break; } // because there can't be any pieces above this one
+                origColor = boardArr[r][c].color;
+                if (boardArr[r + 1][c + 1] != null && origColor.equals(boardArr[r + 1][c + 1].color)
+                        && boardArr[r + 2][c + 2] != null && origColor.equals(boardArr[r + 2][c + 2].color)
+                        && ((r > 0 && c > 0 && boardArr[r - 1][c - 1] == null) 
+                        || (r < 3 && c < 4 && boardArr[r + 3][c + 3] == null))) {
+                    heuristicScore += (origColor.equals(computerColor)) ? 6 : -6; // diagonals are good
+                }
+            }
+            
+            for (int r = 5; r >= 2; r--) {
+                if (boardArr[r][c] == null) { break; }
+                origColor = boardArr[r][c].color;
+                if (boardArr[r - 1][c + 1] != null && origColor.equals(boardArr[r - 1][c + 1].color)
+                        && boardArr[r - 2][c + 2] != null && origColor.equals(boardArr[r - 2][c + 2].color)
+                        && ((r < 5 && c > 0 && boardArr[r + 1][c - 1] == null) 
+                        || (r > 2 && c < 4 && boardArr[r - 3][c + 3] == null))) {
+                    heuristicScore += (origColor.equals(computerColor)) ? 6 : -6;
+                }
             }
         }
         
-        return maxIndex;
-    }
-    
-    /**
-     * Returns the index of the minimum value in the integer array ARR.
-     * @param the array to be considered
-     * @return array index of the min value
-     */
-    private static int minValueIndex(int[] arr) {
-        int minIndex = arr.length - 1;
-        int minValue = arr[minIndex];
-        
-        int value;
-        for (int i = minIndex - 1; i >= 0; i--) {
-            value = arr[i];
-            if (value < minValue) {
-                minIndex = i;
-                minValue = value;
-            }
-        }
-        
-        return minIndex;
+        return heuristicScore;
     }
 }
