@@ -69,7 +69,8 @@ public class SolvedPanel extends ReguC4Panel {
     
     private String computerColor = "black";
     private int computerMove; // the computer's next move, determined by the algorithm below
-    private int maxDepth = 10;
+    private int maxDepth = 9; /* maxDepth should always be an odd number, so that heuristicEval 
+                                * will only ever be called right after the computer has moved */
     
     /**
      * Evaluates all game possibilities with the minimax algorithm and returns the computer's 
@@ -79,7 +80,7 @@ public class SolvedPanel extends ReguC4Panel {
      * variable of the SolvedPanel class.
      * 
      * @param board the board over which the algorithm is being run
-     * @param depth the number of turns (/current recursive depth)
+     * @param depth the number of turns (/current recursive depth). Always begins at 0
      * @param prevPiece the piece that was previously played
      * @param alpha the maximum score that the computer is guaranteed to get
      * @param beta the minimum score that the player is guaranteed to get
@@ -88,8 +89,8 @@ public class SolvedPanel extends ReguC4Panel {
     public int minimax(ReguBoard board, int depth, Piece prevPiece, int alpha, int beta) {
         // Heuristic scoring
         if (prevPiece != null && board.makesFour(prevPiece)) {
-            if (prevPiece.color.equals(computerColor)) {
-                // The computer is the victor, which here is a positive result
+            if (depth % 2 == 1) {
+                // Victory for the previous side, which here is a positive result
                 return 50 - depth; // (win as quickly as possible!)
             } else {
                 // For a projected loss, optimize by extending the game for as long as possible

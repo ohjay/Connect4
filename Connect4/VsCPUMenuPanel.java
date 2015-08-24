@@ -5,6 +5,10 @@ import java.awt.Rectangle;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 
+/**
+ * The menu that serves as a gateway to the "human vs. computer" games.
+ * @author Owen Jow
+ */
 public class VsCPUMenuPanel extends MenuPanel {
     private static final int MM_X = 167, MM_Y = 115, MM_WIDTH = 269, MM_HEIGHT = 21,
             EASY_X = 58, HARD_X = 328, REG_Y = 298, EXT_Y = 171, SQ_WIDTH = 219,
