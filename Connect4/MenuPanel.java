@@ -1,12 +1,14 @@
 package Connect4;
 
-import java.awt.Point;
 import java.awt.Image;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
-import java.awt.event.ActionListener;
-import java.awt.event.ActionEvent;
 
+/**
+ * A basic menu panel that is abstract but no less important. Serves as an intermediary 
+ * storage unit for useful menu variables and methods.
+ * @author Owen Jow 
+ */
 public abstract class MenuPanel extends KPanel {
     protected Image[] menuImages;
     protected int imgIndex; // controls which menu image is currently being displayed

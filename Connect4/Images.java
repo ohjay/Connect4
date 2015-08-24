@@ -44,5 +44,6 @@ public class Images {
             vsCPUHard = new ImageIcon(Images.class.getResource("/images/vsCPUHard.png")).getImage(),
             vsCPUMM = new ImageIcon(Images.class.getResource("/images/vsCPUMM.png")).getImage();
     // Menu sheets (a late discovery)
-    static final Image specialMenuSheet = new ImageIcon(Images.class.getResource("/images/specialMenuSheet.png")).getImage();
+    static final Image specialMenuSheet = new ImageIcon(Images.class.getResource("/images/specialMenuSheet.png")).getImage(),
+            boardsMenuSheet = new ImageIcon(Images.class.getResource("/images/boardsMenuSheet.png")).getImage();
 }

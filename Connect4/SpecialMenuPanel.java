@@ -1,8 +1,5 @@
 package Connect4;
 
-import java.awt.Graphics;
-import java.awt.Graphics2D;
-import java.awt.Image;
 import java.awt.Rectangle;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
@@ -13,8 +10,8 @@ import java.awt.event.MouseEvent;
  * Removal, and a return to the main menu.
  * @author Owen Jow
  */
-public class SpecialMenuPanel extends MenuPanel {
-    private static final int MM_X = 169, MM_Y = 147, MM_WIDTH = 269, MM_HEIGHT = 21,
+public class SpecialMenuPanel extends SheetMenuPanel {
+    private static final int MM_X = 169, MM_Y = 147, MM_WIDTH = 269, MM_HEIGHT = 24,
             WARF_X = 16, TWOFO_X = 211, REMO_X = 407, BOX_Y = 183, BOX_WIDTH = 184,
             BOX_HEIGHT = 298; // WARF = warfare, TWOFO = four by two, REMO = removal
     private static final Rectangle MM_RECT = new Rectangle(MM_X, MM_Y, MM_WIDTH, MM_HEIGHT),
@@ -23,15 +20,8 @@ public class SpecialMenuPanel extends MenuPanel {
             REMO_RECT = new Rectangle(REMO_X, BOX_Y, BOX_WIDTH, BOX_HEIGHT);
     
     public SpecialMenuPanel() {
+        menuSheet = Images.specialMenuSheet;
         mouseListener = new SpecialMouseListener();
-    }
-    
-    @Override
-    public void paintComponent(Graphics g) {
-        Graphics2D g2 = (Graphics2D) g;
-        int sheetOffset = imgIndex * Connect4.WINDOW_LEN;
-        g2.drawImage(Images.specialMenuSheet, 0, 0, Connect4.WINDOW_LEN, Connect4.WINDOW_WIDTH, 
-            sheetOffset, 0, sheetOffset + Connect4.WINDOW_LEN, Connect4.WINDOW_WIDTH, null);
     }
     
     class SpecialMouseListener extends MouseAdapter {
