@@ -18,8 +18,8 @@ public class MainMenuPanel extends MenuPanel {
             BOARDS_CIRC = new Circle(RIGHT_CENTER_X, BOTTOM_CENTER_Y, RADIUS);
     
     public MainMenuPanel() {
-        menuImages = new Image[] { Images.mmReg, Images.mmVsCPU, Images.mmVsHuman,
-                Images.mmSpecial, Images.mmBoards };
+        menuImages = new Image[] { Images.MM_REG, Images.MM_VS_CPU, Images.MM_VS_HUMAN,
+                Images.MM_SPECIAL, Images.MM_BOARDS };
         mouseListener = new MMMouseListener();
     }
     

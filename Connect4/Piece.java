@@ -41,23 +41,23 @@ public class Piece {
     public Image getImage() {
         switch (color) {
             case "red":
-                return Images.redPiece;
+                return Images.RED_PIECE;
             case "yellow":
-                return Images.yellowPiece;
+                return Images.YELLOW_PIECE;
             case "purple":
-                return Images.purplePiece;
+                return Images.PURPLE_PIECE;
             case "green":
-                return Images.greenPiece;
+                return Images.GREEN_PIECE;
             case "black":
-                return Images.blackPiece;
+                return Images.BLACK_PIECE;
             case "cyan":
-                return Images.cyanPiece;
+                return Images.CYAN_PIECE;
             case "gray":
-                return Images.grayPiece;
+                return Images.GRAY_PIECE;
             case "lightGreen":
-                return Images.lightGreenPiece;
+                return Images.LIGHT_GREEN_PIECE;
             default:
-                return Images.magentaPiece;
+                return Images.MAGENTA_PIECE;
         }
     }
     

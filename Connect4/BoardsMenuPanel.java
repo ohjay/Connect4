@@ -19,7 +19,7 @@ public class BoardsMenuPanel extends SheetMenuPanel {
             BOARD_C_RECT = new Rectangle(BOARD_SEL_X, C_Y, BOARD_SEL_WIDTH, BOARD_SEL_HEIGHT);
     
     public BoardsMenuPanel() {
-        menuSheet = Images.boardsMenuSheet;
+        menuSheet = Images.BOARDS_MENU_SHEET;
         mouseListener = new BoardsMenuMouseListener();
     }
     

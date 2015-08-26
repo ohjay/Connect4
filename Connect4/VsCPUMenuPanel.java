@@ -20,8 +20,8 @@ public class VsCPUMenuPanel extends MenuPanel {
             HARD_EXT_RECT = new Rectangle(HARD_X, EXT_Y, SQ_WIDTH, EXT_HEIGHT);
     
     public VsCPUMenuPanel() {
-        menuImages = new Image[] { Images.vsCPUReg, Images.vsCPUEasy, 
-                Images.vsCPUHard, Images.vsCPUMM };
+        menuImages = new Image[] { Images.VS_CPU_REG, Images.VS_CPU_EASY, 
+                Images.VS_CPU_HARD, Images.VS_CPU_MM };
         mouseListener = new VsCPUMouseListener();
     }
     

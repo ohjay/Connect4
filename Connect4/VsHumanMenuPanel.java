@@ -19,7 +19,7 @@ public class VsHumanMenuPanel extends MenuPanel {
             MM_RECT = new Rectangle(MM_X + 6, MM_Y + 7, MM_WIDTH, MM_HEIGHT);
     
     public VsHumanMenuPanel() {
-        menuImages = new Image[] { Images.vsHuReg, Images.vsHuMM, Images.vsHu1C, Images.vsHu2C };
+        menuImages = new Image[] { Images.VS_HU_REG, Images.VS_HU_MM, Images.VS_HU_1C, Images.VS_HU_2C };
         mouseListener = new VsHuMenMouseListener();
     }
     

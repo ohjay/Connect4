@@ -258,22 +258,22 @@ public class ReguBoard {
         // First, draw the background
         switch (bgId) {
             case 6:
-                g2.drawImage(Images.goldBackground6, 0, 0, null);
+                g2.drawImage(Images.GOLD_BACKGROUND_6, 0, 0, null);
                 break;
             case 5:
-                g2.drawImage(Images.goldBackground5, 0, 0, null);
+                g2.drawImage(Images.GOLD_BACKGROUND_5, 0, 0, null);
                 break;
             case 4:
-                g2.drawImage(Images.goldBackground4, 0, 0, null);
+                g2.drawImage(Images.GOLD_BACKGROUND_4, 0, 0, null);
                 break;
             case 3:
-                g2.drawImage(Images.goldBackground3, 0, 0, null);
+                g2.drawImage(Images.GOLD_BACKGROUND_3, 0, 0, null);
                 break;
             case 2:
-                g2.drawImage(Images.goldBackground2, 0, 0, null);
+                g2.drawImage(Images.GOLD_BACKGROUND_2, 0, 0, null);
                 break;
             default:
-                g2.drawImage(Images.goldBackground1, 0, 0, null);
+                g2.drawImage(Images.GOLD_BACKGROUND_1, 0, 0, null);
                 break;
         }
         
@@ -294,7 +294,7 @@ public class ReguBoard {
         // Then, draw the board over them so it appears as if the pieces are inside the board
         for (int i = 0; i < BOARD_WIDTH; i++) { // we have to draw 7 rows' worth of squares...
             for (int j = 0; j < BOARD_HEIGHT; j++) { // ...and 6 columns' worth of squares
-                g2.drawImage(Images.square, L_OFFSET + i * SQUARE_WIDTH, 
+                g2.drawImage(Images.SQUARE, L_OFFSET + i * SQUARE_WIDTH, 
                         TOP_OFFSET + j * SQUARE_WIDTH, null);
             }
         }

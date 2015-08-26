@@ -13,7 +13,7 @@ import javax.swing.JPanel;
  * - Solved mode (in which the computer will play perfectly)
  * - Two-player: single-computer (in which two humans play on one computer)
  * - Two-player: multiple-computer (in which humans play on different computers)
- * - Warfare (in which 3 or 4 players can play at the same time)
+ * - Warfare (in which 4 players can play at the same time)
  * - Four by Two (in which players can place two at a time)
  * - Removal (in which players can opt to remove a piece as their turn, w/ up to 5 removals total)
  * - Boards (in which boards are differently shaped)
@@ -22,10 +22,40 @@ import javax.swing.JPanel;
 public class Connect4 extends JApplet {
     static final int WINDOW_LEN = 600, WINDOW_WIDTH = 600, WINDOW_X = 121, 
             WINDOW_Y = 121;
+    private static JFrame window;
     
     public static void main(String[] args) {
-        initializeGameData(); // so that the game doesn't lag anywhere while doing this
         launchWindow();
+        initializeGameData(); // so that the game doesn't lag anywhere while doing this
+        
+        // Now that the content has loaded, we can start the actual game
+        Panels.layout.show(Panels.contentPanel, "mainMenu");
+        Panels.mainMenuPanel.activate();
+        Panels.currPanel = Panels.mainMenuPanel;
+    }
+    
+    /**
+     * Launches the game window, which will contain everything that the user sees.
+     * The first panel to be displayed will be the splash/loading screen.
+     */
+    private static void launchWindow() {
+        window = new JFrame("Connect4");
+        window.setSize(WINDOW_LEN, WINDOW_WIDTH);
+        window.setLocation(WINDOW_X, WINDOW_Y);
+        window.setResizable(false);
+        window.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        window.setLocationRelativeTo(null);
+        
+        // Initialize base JPanel and card layout
+        Panels.contentPanel = new JPanel();
+        Panels.contentPanel.setLayout(new CardLayout());
+        Panels.layout = (CardLayout) Panels.contentPanel.getLayout();
+        
+        // Add the splash screen to the card layout
+        Panels.contentPanel.add(new SplashScreen(), "splashScreen");
+        
+        window.setContentPane(Panels.contentPanel);
+        window.setVisible(true);
     }
     
     /**
@@ -33,11 +63,6 @@ public class Connect4 extends JApplet {
      * Among the things set up are game panels, the card layout structure, 
      */
     private static void initializeGameData() {
-        // Initialize base JPanel and card layout
-        Panels.contentPanel = new JPanel();
-        Panels.contentPanel.setLayout(new CardLayout());
-        Panels.layout = (CardLayout) Panels.contentPanel.getLayout();
-        
         // Initialize menu panels
         Panels.mainMenuPanel = new MainMenuPanel();
         Panels.contentPanel.add(Panels.mainMenuPanel, "mainMenu");
@@ -65,23 +90,6 @@ public class Connect4 extends JApplet {
         Panels.contentPanel.add(Panels.removalPanel, "removal");
         Panels.boardsPanel = new BoardsPanel();
         Panels.contentPanel.add(Panels.boardsPanel, "boards");
-    }
-    
-    /**
-     * Launches the game window, which will contain everything that the user sees.
-     */
-    private static void launchWindow() {
-        JFrame window = new JFrame("Connect4");
-        window.setSize(WINDOW_LEN, WINDOW_WIDTH);
-        window.setLocation(WINDOW_X, WINDOW_Y);
-        window.setResizable(false);
-        window.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        window.setLocationRelativeTo(null);
-        
-        Panels.mainMenuPanel.activate();
-        Panels.currPanel = Panels.mainMenuPanel;
-        window.setContentPane(Panels.contentPanel);
-        window.setVisible(true);
     }
     
     /**

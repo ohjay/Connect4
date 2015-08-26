@@ -20,7 +20,7 @@ public class SpecialMenuPanel extends SheetMenuPanel {
             REMO_RECT = new Rectangle(REMO_X, BOX_Y, BOX_WIDTH, BOX_HEIGHT);
     
     public SpecialMenuPanel() {
-        menuSheet = Images.specialMenuSheet;
+        menuSheet = Images.SPECIAL_MENU_SHEET;
         mouseListener = new SpecialMouseListener();
     }
     
