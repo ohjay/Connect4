@@ -67,7 +67,7 @@ public class SolvedPanel extends ReguC4Panel {
     // Minimax solution logic (with alpha-beta pruning)
     //================================================================================
     
-    private String computerColor = "black";
+    private String computerColor = "black", userColor = "red";
     private int computerMove; // the computer's next move, determined by the algorithm below
     private int maxDepth = 9; /* maxDepth should always be an odd number, so that heuristicEval 
                                 * will only ever be called right after the computer has moved */
@@ -76,30 +76,22 @@ public class SolvedPanel extends ReguC4Panel {
      * Evaluates all game possibilities with the minimax algorithm and returns the computer's 
      * maximal heuristic game score. Will also set the COMPUTER_MOVE variable to the value
      * of the optimal column in which the computer can play. This method will always assume
-     * that the computer plays as the color COMPUTER_COLOR, which is given as an instance
-     * variable of the SolvedPanel class.
+     * that the computer plays as the color COMPUTER_COLOR and that the user plays as USER_COLOR,
+     * both of which are given as instance variables of the SolvedPanel class.
      * 
      * @param board the board over which the algorithm is being run
      * @param depth the number of turns (/current recursive depth). Always begins at 0
      * @param prevPiece the piece that was previously played
      * @param alpha the maximum score that the computer is guaranteed to get
      * @param beta the minimum score that the player is guaranteed to get
-     * @return the column in which the computer should play next (as an integer from 0-6)
      */
     public int minimax(ReguBoard board, int depth, Piece prevPiece, int alpha, int beta) {
         // Heuristic scoring
-        if (prevPiece != null && board.makesFour(prevPiece)) {
-            if (depth % 2 == 1) {
-                // Victory for the previous side, which here is a positive result
-                return 50 - depth; // (win as quickly as possible!)
-            } else {
-                // For a projected loss, optimize by extending the game for as long as possible
-                return depth - 50;
-            }
-        } else if (board.isBoardFull()) {
-            return 0; // heuristic score for a draw
-        } else if (depth == maxDepth) { // if we go any farther, we'll be in recursive Limbo forever
-            return heuristicEval(board);
+        if ((prevPiece != null && board.makesFour(prevPiece)) || board.isBoardFull() || depth == maxDepth) {
+            return (depth % 2 == 1) ? depth * heuristicEval(board, computerColor) 
+                    + ((prevPiece != null && board.makesFour(prevPiece)) ? 500000 : 0)
+                    : depth * heuristicEval(board, userColor)
+                    + ((prevPiece != null && board.makesFour(prevPiece)) ? 500000 : 0);
         }
         
         // The game isn't over, so we'll continue the recursion
@@ -165,144 +157,181 @@ public class SolvedPanel extends ReguC4Panel {
      * Heuristically evalutes a Connect4 board and assigns to it a score 
      * representing the strength of the computer's position. [This is the 
      * value that will be returned.]
+     *
      * In order to quantify positional strength, this method will take into account
-     * the number of connected threes and twos for each side. We will assume
-     * that there exist no four-in-a-rows for either player.
+     * the number of connected fours, threes, and twos for each side.
      * @param board the Connect4 board to evaluate
-     * @return a score heuristic
+     * @param color the color whose perspective we want to assume
+     * @return a score heuristic for COLOR (positive is good, negative is bad)
      */
-    public int heuristicEval(ReguBoard board) {
-        int heuristicScore = 0; // the total score
-        
-        Piece[][] boardArr = board.getBoard();
-        int height = ReguBoard.BOARD_HEIGHT, width = ReguBoard.BOARD_WIDTH;
-        String oneColor = "", twoColor = ""; // the color of length 1/2 connected chains
-        
-        // Check for vertical threes and twos
-        for (int c = 0; c < width; c++) {
-            for (int r = height - 1; r >= 1; r--) { // top row is irrelevant
-                if (boardArr[r][c] == null) {
-                    if (!twoColor.isEmpty()) {
-                        // Connect 2, with potential
-                        heuristicScore += (twoColor.equals(computerColor)) ? 2 : -2;
-                    } 
-                    
-                    oneColor = ""; twoColor = ""; // reset values
-                    break; 
-                } else if (twoColor.equals(boardArr[r][c].color)) {
-                    if (boardArr[r - 1][c] == null) {
-                        // Connect 3, with potential
-                        heuristicScore += (twoColor.equals(computerColor)) ? 5 : -5;
-                    } else {
-                        // Connect 3 nullified by the opposing side
-                        heuristicScore += (twoColor.equals(computerColor)) ? -7 : 7;
+    public int heuristicEval(ReguBoard board, String color) {
+        Piece[][] b = board.getBoard();
+        return getHorizontalScore(b, color) + getVerticalScore(b, color) + getDiagonalScore(b, color);
+    }
+    
+    /**
+     * Returns the score that COLOR receives for [potential] horizontal piece combinations.
+     * Points are awarded for chains of two or three that have the potential to become four.
+     * 
+     * For such chains of two, 10 points will be awarded; for such chains of three, 100 points
+     * will be awarded (to Gryffindor). Finally, for chains of four, 10000 points will be awarded
+     * (because chains of four signify that the game has been won).
+     * 
+     * Equivalent points will also be deducted for chains belonging to the opposing color.
+     * 
+     * @param b an array representation of the Connect4 board to evaluate
+     * @param color the color whose perspective we want to assume
+     * @return a horizontal score heuristic
+     */
+    private int getHorizontalScore(Piece[][] b, String color) {
+        int score = 0;
+        String oneColor = "", twoColor = "", threeColor = ""; // the color of length 1/2/3 connected chains
+        Piece p; // the piece we're currently examining
+            
+        for (int r = ReguBoard.BOARD_HEIGHT - 1; r >= 0; r--) { // start from the bottom up
+            for (int c = 0; c < ReguBoard.BOARD_WIDTH; c++) { // start from the left rightward
+                p = b[r][c]; // kind of like pv = nrt, except not really at all
+                
+                if (p == null) {
+                    if (!threeColor.isEmpty()) { 
+                        // There were three pieces connected (with potential)
+                        score += (threeColor.equals(color)) ? 1000 : -1000;
+                        threeColor = "";
+                    } else if (!twoColor.isEmpty()) {
+                        // There were two pieces connected (maybe with potential)
+                        score += (twoColor.equals(color)) ? 100 : -100;
+                        twoColor = "";
                     }
-                    oneColor = ""; twoColor = "";
-                    break;
-                } else if (oneColor.equals(boardArr[r][c].color)) {
-                    // Connect 2... so far
+                    
+                    oneColor = "";
+                } else if (p.color.equals(threeColor)) {
+                    // This is basically catching the Snitch, so we may as well return now
+                    return (threeColor.equals(color)) ? score + 100000 : score - 100000;
+                } else if (p.color.equals(twoColor)) {
+                    threeColor = twoColor;
+                    twoColor = "";
+                } else if (p.color.equals(oneColor)) {
                     twoColor = oneColor;
                     oneColor = "";
                 } else {
-                    // The chain was broken by the opposite color
-                    if (!twoColor.isEmpty()) {
-                        // Give the breaker a score bonus!
-                        heuristicScore += (twoColor.equals(computerColor)) ? -5 : 5;
-                        twoColor = "";
-                    } else if (!oneColor.isEmpty()) {
-                        heuristicScore += (oneColor.equals(computerColor)) ? -3 : 3;
-                    }
-                    oneColor = boardArr[r][c].color;
+                    // Chain broken by the opposing color!
+                    oneColor = p.color;
                 }
             }
             
-            oneColor = ""; twoColor = ""; // resetting these for the next loop iteration
+            // Check for a far-right chain with potential
+            if (!threeColor.isEmpty() && b[r][3] == null) {
+                score += (threeColor.equals(color)) ? 1000 : -1000;
+            } else if (!twoColor.isEmpty()) {
+                Piece middlePiece = b[r][3];
+                if (b[r][4] == null && !(middlePiece != null && !middlePiece.color.equals(color))) {
+                    score += (twoColor.equals(color)) ? 100 : -100;
+                } 
+                
+                twoColor = "";
+            }
+            
+            oneColor = ""; threeColor = "";
         }
         
-        // Check for horizontal threes and twos [also give bonuses for each column]
-        for (int r = height - 1; r >= 0; r--) {
-            for (int c = 0; c < width; c++) {
-                if (boardArr[r][c] == null) {
-                    if (!twoColor.isEmpty()) {
-                        // There were two pieces connected (with potential)
-                        heuristicScore += (twoColor.equals(computerColor)) ? 2 : -2;
+        return score;
+    }
+    
+    /**
+     * Returns the score that COLOR receives for [potential] vertical piece combinations.
+     * The hierarchy of points awarded is identical to that of the horizontal scoring method.
+     * 
+     * @param b an array representation of the Connect4 board to evaluate
+     * @param color the color whose perspective we want to assume
+     * @return a vertical score heuristic
+     */
+    private int getVerticalScore(Piece[][] b, String color) {
+        int score = 0;
+        String oneColor = "", twoColor = "", threeColor = "";
+        Piece p;
+        
+        for (int c = 0; c < ReguBoard.BOARD_WIDTH; c++) {
+            for (int r = ReguBoard.BOARD_HEIGHT - 1; r >= 0; r--) {
+                p = b[r][c];
+                
+                if (p == null) {
+                    if (!threeColor.isEmpty()) {
+                        score += (threeColor.equals(color)) ? 1000 : -1000;
+                        threeColor = "";
+                    } else if (!twoColor.isEmpty()) {
+                        score += (twoColor.equals(color)) ? 100 : -100;
+                        twoColor = "";
                     }
-                    oneColor = ""; twoColor = "";
+                    
+                    oneColor = "";
+                    break; // obviously there won't be any pieces above an empty square
+                } else if (p.color.equals(threeColor)) {
+                    return (threeColor.equals(color)) ? score + 100000 : score - 100000;
+                } else if (p.color.equals(twoColor)) {
+                    threeColor = twoColor;
+                    twoColor = "";
+                } else if (p.color.equals(oneColor)) {
+                    twoColor = oneColor;
+                    oneColor = "";
                 } else {
-                    // Add in a bonus for each piece (we'll give more points to pieces near the center)
-                    if (boardArr[r][c] != null) {
-                        heuristicScore += (twoColor.equals(computerColor)) ? 
-                                4 - Math.abs(3 - c) : -4 + Math.abs(3 - c);
-                    }
-                    
-                    if (boardArr[r][c].color.equals(twoColor)) {
-                        // We have a three in a row
-                        if ((c > 2 && boardArr[r][c - 3] == null) || (c < 6 && boardArr[r][c + 1] == null)) {
-                            // ...and it has potential!
-                            heuristicScore += (twoColor.equals(computerColor)) ? 5 : -5;
-                        } else if ((c > 2 && boardArr[r][c - 3] != null) || (c < 6 && boardArr[r][c + 1] != null)) {
-                            // Combo breaker :/ ...still, good for one side!
-                            heuristicScore += (twoColor.equals(computerColor)) ? -7 : 7;
-                        }
-                        twoColor = "";
-                    } else if (boardArr[r][c].color.equals(oneColor)) {
-                        // So far we have two in a row
-                        twoColor = oneColor;
-                        oneColor = "";
-                    } else {
-                        // Chain broken by the opposing color!
-                        if (!twoColor.isEmpty()) { // assign some bonuses
-                            heuristicScore += (twoColor.equals(computerColor)) ? -5 : 5;
-                        } else if (!oneColor.isEmpty()) {
-                            heuristicScore += (oneColor.equals(computerColor)) ? -3 : 3;
-                        }
-                        
-                        if (c > 2 && !twoColor.isEmpty() && boardArr[r][c - 3] == null) {
-                            // There was a Connect 2
-                            heuristicScore += (twoColor.equals(computerColor)) ? 2 : -2;
-                            twoColor = "";
-                        }
-                    
-                        oneColor = boardArr[r][c].color;
-                    }
+                    // Chain broken by the opposing color!
+                    oneColor = p.color;
                 }
             }
             
-            // Make sure that there wasn't a far-right Connect 2 with potential
-            if (!twoColor.isEmpty() && boardArr[r][4] == null) {
-                // ...and there was!
-                heuristicScore += (twoColor.equals(computerColor)) ? 2 : -2;
-            }
-            
-            oneColor = ""; twoColor = "";
+            oneColor = ""; twoColor = ""; threeColor = ""; // resetting these for the next iteration
         }
         
-        // Check for diagonal threes (note: threes only!)
+        return score;
+    }
+    
+    /**
+     * Returns the score that COLOR receives for [potential] diagonal piece combinations.
+     * The hierarchy of points awarded is similar to that of the horizontal scoring method.
+     * The distinction is that this method only checks for diagonal threes and fours at the moment.
+     * 
+     * @param b an array representation of the Connect4 board to evaluate
+     * @param color the color whose perspective we want to assume
+     * @return a diagonal score heuristic
+     */
+    private int getDiagonalScore(Piece[][] b, String color) {
+        int score = 0;
+        
         for (int c = 0; c < 4; c++) {
             String origColor; // the color of the first piece
+            
+            // Traveling in a bottom-right direction
             for (int r = 3; r >= 0; r--) {
-                if (boardArr[r][c] == null) { break; } // because there can't be any pieces above this one
-                origColor = boardArr[r][c].color;
-                if (boardArr[r + 1][c + 1] != null && origColor.equals(boardArr[r + 1][c + 1].color)
-                        && boardArr[r + 2][c + 2] != null && origColor.equals(boardArr[r + 2][c + 2].color)
-                        && ((r > 0 && c > 0 && boardArr[r - 1][c - 1] == null) 
-                        || (r < 3 && c < 4 && boardArr[r + 3][c + 3] == null))) {
-                    heuristicScore += (origColor.equals(computerColor)) ? 6 : -6; // diagonals are good
+                if (b[r][c] == null) { break; } // because there can't be any pieces above this one
+                origColor = b[r][c].color;
+                if (b[r + 1][c + 1] != null && origColor.equals(b[r + 1][c + 1].color)
+                        && b[r + 2][c + 2] != null && origColor.equals(b[r + 2][c + 2].color)) {
+                    if (r < 3 && c < 4 && b[r + 3][c + 3] != null && origColor.equals(b[r + 3][c + 3].color)) {
+                        return (origColor.equals(color)) ? score + 100000 : score - 100000;
+                    } else if ((r > 0 && c > 0 && b[r - 1][c - 1] == null) 
+                            || (r < 3 && c < 4 && b[r + 3][c + 3] == null)) {
+                        // We'll call it a three with potential
+                        score += (origColor.equals(color)) ? 1000 : -1000;
+                    }
                 }
             }
             
+            // Traveling in an up-right direction
             for (int r = 5; r >= 2; r--) {
-                if (boardArr[r][c] == null) { break; }
-                origColor = boardArr[r][c].color;
-                if (boardArr[r - 1][c + 1] != null && origColor.equals(boardArr[r - 1][c + 1].color)
-                        && boardArr[r - 2][c + 2] != null && origColor.equals(boardArr[r - 2][c + 2].color)
-                        && ((r < 5 && c > 0 && boardArr[r + 1][c - 1] == null) 
-                        || (r > 2 && c < 4 && boardArr[r - 3][c + 3] == null))) {
-                    heuristicScore += (origColor.equals(computerColor)) ? 6 : -6;
+                if (b[r][c] == null) { break; }
+                origColor = b[r][c].color;
+                if (b[r - 1][c + 1] != null && origColor.equals(b[r - 1][c + 1].color)
+                        && b[r - 2][c + 2] != null && origColor.equals(b[r - 2][c + 2].color)) {
+                    if (r > 2 && c < 4 && b[r - 3][c + 3] != null && origColor.equals(b[r - 3][c + 3].color)) {
+                        return (origColor.equals(color)) ? score + 100000 : score - 100000;
+                    } else if ((r < 5 && c > 0 && b[r + 1][c - 1] == null) 
+                            || (r > 2 && c < 4 && b[r - 3][c + 3] == null)) {
+                        score += (origColor.equals(color)) ? 1000 : -1000;
+                    }
                 }
             }
         }
         
-        return heuristicScore;
+        return score;
     }
 }
