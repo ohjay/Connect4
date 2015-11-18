@@ -3,7 +3,11 @@ The classic game of Connect Four, enhanced with several modern modifications.
 
 A work in a progress; currently playable only by compiling all of the source files and running the program through the main() method in the Connect4/Connect4 class. This was built originally as a proof to my friend that Connect Four is a solved game.
 
-**Update [9/13/15]**: A playable demo should be out within the next 2 months! As soon as I perfect my minimax methods, work should proceed relatively quickly.
+## Development Timeline
+- [By **12/09/15 @ 11:59pm**] Working minimax for the CPU panels
+- [By **12/11/15 @ 11:59pm**] All special modes complete
+- [By **12/21/15 @ 11:59pm**] Boards + networked connection modes complete
+- [By **12/27/15 @ 11:59pm**] UI in a polished state (incl. post-game screen + score tracking?), game in release-friendly form overall!
 
 ## Implementation Details
 Connect4 is a Swing application that allows the user to enjoy several different game modes:

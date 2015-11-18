@@ -13,6 +13,16 @@ public abstract class MenuPanel extends KPanel {
     protected Image[] menuImages;
     protected int imgIndex; // controls which menu image is currently being displayed
     
+    /**
+     * Activates and resets the panel (so that the image displayed upon load 
+     * is always the default).
+     */
+    @Override
+    public void activate() {
+        super.activate();
+        imgIndex = 0;
+    }
+    
     @Override
     public void paintComponent(Graphics g) {
         super.paintComponent(g);
