@@ -46,4 +46,6 @@ public class Images {
     // Menu sheets (a late discovery)
     static final Image SPECIAL_MENU_SHEET = new ImageIcon(Images.class.getResource("/images/specialMenuSheet.png")).getImage(),
             BOARDS_MENU_SHEET = new ImageIcon(Images.class.getResource("/images/boardsMenuSheet.png")).getImage();
+    // Creator message
+    static final Image CREATOR_MSG_SCREEN = new ImageIcon(Images.class.getResource("/images/creatorMessage.png")).getImage();
 }
