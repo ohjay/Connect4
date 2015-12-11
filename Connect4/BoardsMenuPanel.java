@@ -35,12 +35,10 @@ public class BoardsMenuPanel extends SheetMenuPanel {
                     Panels.layout.show(Panels.contentPanel, "mainMenu");
                     Panels.mainMenuPanel.activate();
                     Panels.currPanel = Panels.mainMenuPanel;
-                } else if (imgIndex == 2) { // board A
-                    // Insert board A logic here
-                } else if (imgIndex == 3) { // board B
-                    // Insert board B logic here
-                } else { // board C
-                    // Insert board C logic here
+                } else {
+                    Panels.layout.show(Panels.contentPanel, "creatorMsg");
+                    Panels.creatorMsgPanel.activate(Panels.currPanel, "boardsMenu");
+                    Panels.currPanel = Panels.creatorMsgPanel;
                 }
             } 
         }

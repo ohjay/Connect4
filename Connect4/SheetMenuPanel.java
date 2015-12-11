@@ -18,6 +18,12 @@ public abstract class SheetMenuPanel extends KPanel {
     protected int imgIndex; // still controls which image is currently being displayed
     
     @Override
+    public void activate() {
+        super.activate();
+        imgIndex = 0;
+    }
+    
+    @Override
     public void paintComponent(Graphics g) {
         Graphics2D g2 = (Graphics2D) g;
         int sheetOffset = imgIndex * Connect4.WINDOW_LEN;
