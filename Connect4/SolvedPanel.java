@@ -53,7 +53,7 @@ public class SolvedPanel extends ReguC4Panel {
          */
         public void mouseMoved(MouseEvent evt) {
             if (listenerEnabled) {
-                if (evt.getX() <= Connect4.WINDOW_LEN - Piece.WIDTH) {
+                if (evt.getX() <= Connect4.WINDOW_LEN - Piece.REG_WIDTH) {
                     MouseData.x = evt.getX();
                     if (!board.isPieceFalling) {
                         board.interactivePiece.setX(MouseData.x);
@@ -98,7 +98,7 @@ public class SolvedPanel extends ReguC4Panel {
         if (board.getCurrPlayer().equals(computerColor)) {
             // Since it's the computer's turn, we want the MAX heuristic score
             int maxScore = Integer.MIN_VALUE; 
-            for (int c = ReguBoard.BOARD_WIDTH - 1; c >= 0; c--) {
+            for (int c = ReguBoard.boardWidth - 1; c >= 0; c--) {
                 if (!board.isColumnFull(c)) { // if a column's not full, then it's a possible move
                     // Create a piece for the computer to [theoretically] place
                     int lowRow = board.lowestOpenRow(c);
@@ -126,7 +126,7 @@ public class SolvedPanel extends ReguC4Panel {
         } else {
             // It's the player's turn, whose score we want to MINimize
             int minScore = Integer.MAX_VALUE;
-            for (int c = ReguBoard.BOARD_WIDTH - 1; c >= 0; c--) {
+            for (int c = ReguBoard.boardWidth - 1; c >= 0; c--) {
                 if (!board.isColumnFull(c)) { // if a column's not full, then it's a possible move
                     // Create a piece for the computer to [theoretically] place
                     int lowRow = board.lowestOpenRow(c);
@@ -188,8 +188,8 @@ public class SolvedPanel extends ReguC4Panel {
         String oneColor = "", twoColor = "", threeColor = ""; // the color of length 1/2/3 connected chains
         Piece p; // the piece we're currently examining
             
-        for (int r = ReguBoard.BOARD_HEIGHT - 1; r >= 0; r--) { // start from the bottom up
-            for (int c = 0; c < ReguBoard.BOARD_WIDTH; c++) { // start from the left rightward
+        for (int r = ReguBoard.boardHeight - 1; r >= 0; r--) { // start from the bottom up
+            for (int c = 0; c < ReguBoard.boardWidth; c++) { // start from the left rightward
                 p = b[r][c]; // kind of like pv = nrt, except not really at all
                 
                 if (p == null) {
@@ -250,8 +250,8 @@ public class SolvedPanel extends ReguC4Panel {
         String oneColor = "", twoColor = "", threeColor = "";
         Piece p;
         
-        for (int c = 0; c < ReguBoard.BOARD_WIDTH; c++) {
-            for (int r = ReguBoard.BOARD_HEIGHT - 1; r >= 0; r--) {
+        for (int c = 0; c < ReguBoard.boardWidth; c++) {
+            for (int r = ReguBoard.boardHeight - 1; r >= 0; r--) {
                 p = b[r][c];
                 
                 if (p == null) {

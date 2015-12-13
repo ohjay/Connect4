@@ -82,6 +82,8 @@ public class Connect4 extends JApplet {
         Panels.contentPanel.add(Panels.solvedPanel, "solved");
         Panels.twoPlayerPanel = new TwoPlayerPanel();
         Panels.contentPanel.add(Panels.twoPlayerPanel, "twoPlayer");
+        Panels.warfarePanel = new WarfarePanel();
+        Panels.contentPanel.add(Panels.warfarePanel, "warfare");
         Panels.fourByTwoPanel = new FourByTwoPanel();
         Panels.contentPanel.add(Panels.fourByTwoPanel, "fourByTwo");
         Panels.removalPanel = new RemovalPanel();

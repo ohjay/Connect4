@@ -8,4 +8,5 @@ package Connect4;
  */
 public class MouseData {
     static int x; // the x-coordinate at which the mouse is currently located
+    static int y; // the y-coordinate at which the mouse is currently located
 }

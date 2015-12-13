@@ -3,8 +3,6 @@ package Connect4;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.event.ActionEvent;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
 
 /**
  * An abstract class for regular Connect4 gameplay (gameplay with a 7x7 board and two players).

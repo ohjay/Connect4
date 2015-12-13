@@ -36,7 +36,7 @@ public class TwoPlayerPanel extends ReguC4Panel {
          * Controls the interactive piece, and registers movement in the MouseData class.
          */
         public void mouseMoved(MouseEvent evt) {
-            if (evt.getX() <= Connect4.WINDOW_LEN - Piece.WIDTH) {
+            if (evt.getX() <= Connect4.WINDOW_LEN - Piece.REG_WIDTH) {
                 MouseData.x = evt.getX();
                 if (!board.isPieceFalling) {
                     board.interactivePiece.setX(MouseData.x);
