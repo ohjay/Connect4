@@ -22,7 +22,7 @@ public class Piece {
      */
     public Piece(String color, int x) {
         this.color = color;
-        position = new Point(x, ReguBoard.PIECE_START_HEIGHT);
+        position = new Point(x, ReguBoard.pieceStartHeight);
     }
     
     /**
@@ -99,6 +99,6 @@ public class Piece {
      * @return a boolean indicating whether or not the piece has reached its final level
      */
     public boolean inFinalPosition() {
-        return (getY() >= ReguBoard.TOP_OFFSET + finalLevel * ReguBoard.SQUARE_WIDTH);
+        return (getY() >= ReguBoard.topOffset + finalLevel * ReguBoard.squareWidth);
     }
 }

@@ -57,8 +57,8 @@ public class RemovalPanel extends ReguC4Panel {
                     // The user may be trying to remove a piece. Let's see if they clicked on one:
                     // 1) Calculate the approximate array indices of the mouse coordinates
                     int mouseY = evt.getY();
-                    int rowIndex = (int) (mouseY - ReguBoard.TOP_OFFSET) / ReguBoard.SQUARE_WIDTH;
-                    int colIndex = (int) (MouseData.x - ReguBoard.L_OFFSET) / ReguBoard.SQUARE_WIDTH;
+                    int rowIndex = (int) (mouseY - ReguBoard.topOffset) / ReguBoard.squareWidth;
+                    int colIndex = (int) (MouseData.x - ReguBoard.leftOffset) / ReguBoard.squareWidth;
                     
                     // 2) See if that piece is the property of the current player
                     Piece piece = board.getBoard()[rowIndex][colIndex];
@@ -99,10 +99,10 @@ public class RemovalPanel extends ReguC4Panel {
                 }
             }
             
-            board.shouldHidePiece = (mouseX > ReguBoard.L_OFFSET 
-                    && mouseX < ReguBoard.L_OFFSET + ReguBoard.BOARD_WIDTH * ReguBoard.SQUARE_WIDTH
-                    && mouseY > ReguBoard.TOP_OFFSET 
-                    && mouseY < ReguBoard.TOP_OFFSET + ReguBoard.BOARD_HEIGHT * ReguBoard.SQUARE_WIDTH);
+            board.shouldHidePiece = (mouseX > ReguBoard.leftOffset 
+                    && mouseX < ReguBoard.leftOffset + ReguBoard.boardWidth * ReguBoard.squareWidth
+                    && mouseY > ReguBoard.topOffset 
+                    && mouseY < ReguBoard.topOffset + ReguBoard.boardHeight * ReguBoard.squareWidth);
         }
     }
 }

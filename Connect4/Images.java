@@ -27,6 +27,12 @@ public class Images {
             GOLD_BACKGROUND_3 = new ImageIcon(Images.class.getResource("/images/gold_bg3.png")).getImage(),
             GOLD_BACKGROUND_2 = new ImageIcon(Images.class.getResource("/images/gold_bg2.png")).getImage(),
             GOLD_BACKGROUND_1 = new ImageIcon(Images.class.getResource("/images/gold_bg1.png")).getImage();
+    // Small board/piece images (33x33 and 36x36)
+    static final Image SMALL_SQUARE = new ImageIcon(Images.class.getResource("/images/c4Square_small.png")).getImage(),
+            SMALL_RED = new ImageIcon(Images.class.getResource("/images/c4RedPiece_small.png")).getImage(),
+            SMALL_YELLOW = new ImageIcon(Images.class.getResource("/images/c4YellowPiece_small.png")).getImage(),
+            SMALL_GREEN = new ImageIcon(Images.class.getResource("/images/c4GreenPiece_small.png")).getImage(),
+            SMALL_MAGENTA = new ImageIcon(Images.class.getResource("/images/c4MagentaPiece_small.png")).getImage();
     // Main menu images
     static final Image MM_REG = new ImageIcon(Images.class.getResource("/images/mainMenuRegular.png")).getImage(),
             MM_VS_CPU = new ImageIcon(Images.class.getResource("/images/mainMenuVsCPU.png")).getImage(),

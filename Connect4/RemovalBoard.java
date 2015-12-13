@@ -48,6 +48,9 @@ public class RemovalBoard extends ReguBoard {
                 piece.finalLevel = piece.finalLevel + 1;
                 upperFallingRow -= 1;
             }
+        } else {
+            switchPlayers();
+            interactivePiece = new Piece(currColor, MouseData.x);
         }
     }
     
@@ -90,9 +93,9 @@ public class RemovalBoard extends ReguBoard {
             }
         } else if (interactivePiece.inFinalPosition()) {
             endTurn();
-        } else if (interactivePiece.getY() > TOP_OFFSET + SQUARE_WIDTH) {
+        } else if (interactivePiece.getY() > topOffset + squareWidth) {
             interactivePiece.translate(0, 4);
-        } else if (interactivePiece.getY() > TOP_OFFSET) {
+        } else if (interactivePiece.getY() > topOffset) {
             interactivePiece.translate(0, 3);
         } else {
             interactivePiece.translate(0, 2);
