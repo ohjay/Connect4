@@ -8,15 +8,17 @@ import java.awt.Point;
  * @author Owen Jow
  */
 public class Piece {
-    static final int WIDTH = 55;
-    static final double RADIUS = ((double) WIDTH) / 2;
+    static final int REG_WIDTH = 55, SMALL_WIDTH = 33;
+    static final double REG_RADIUS = ((double) REG_WIDTH) / 2;
     String color;
     private Point position;
     int col; // the piece's column
-    int finalLevel; // the final row that this piece will occupy within its column
+    int finalRow; // the final row that this piece will occupy within its column
+    private boolean isSmall;
     
     /**
      * Constructs a piece; assumes that COLOR is either red, yellow, green, or magenta.
+     * Assumes that the piece is not small.
      * @param color an identifier to be used to select the piece's color
      * @param x the x-coordinate at which the piece should reside
      */
@@ -33,32 +35,40 @@ public class Piece {
         this.color = color;
         this.position = new Point(x, fLevel);
         this.col = x;
-        this.finalLevel = fLevel;
+        this.finalRow = fLevel;
+    }
+    
+    /**
+     * Constructs an optionally small piece at position (x, y).
+     */
+    public Piece(String color, boolean isSmall, int x, int y) {
+        this.color = color;
+        this.position = new Point(x, y);
+        this.isSmall = isSmall;
     }
     
     /**
      * Returns the piece's associated image, based on the nature of its color attribute.
      */
     public Image getImage() {
-        switch (color) {
-            case "red":
-                return Images.RED_PIECE;
-            case "yellow":
-                return Images.YELLOW_PIECE;
-            case "purple":
-                return Images.PURPLE_PIECE;
-            case "green":
-                return Images.GREEN_PIECE;
-            case "black":
-                return Images.BLACK_PIECE;
-            case "cyan":
-                return Images.CYAN_PIECE;
-            case "gray":
-                return Images.GRAY_PIECE;
-            case "lightGreen":
-                return Images.LIGHT_GREEN_PIECE;
-            default:
-                return Images.MAGENTA_PIECE;
+        if (!isSmall) {
+            switch (color) {
+                case "red":
+                    return Images.RED_PIECE;
+                default:
+                    return Images.BLACK_PIECE;
+            }
+        } else {
+            switch (color) {
+                case "red":
+                    return Images.SMALL_RED;
+                case "yellow":
+                    return Images.SMALL_YELLOW;
+                case "green":
+                    return Images.SMALL_GREEN;
+                default:
+                    return Images.SMALL_MAGENTA;
+            }
         }
     }
     
@@ -67,6 +77,14 @@ public class Piece {
      */
     public void setX(int x) {
         position.move(x, getY());
+    }
+    
+    /**
+     * Sets the piece's x-coordinate and the piece's y-coordinate 
+     * to X and Y, respectively.
+     */
+    public void setXY(int x, int y) {
+        position.move(x, y);
     }
     
     /**
@@ -99,6 +117,6 @@ public class Piece {
      * @return a boolean indicating whether or not the piece has reached its final level
      */
     public boolean inFinalPosition() {
-        return (getY() >= ReguBoard.topOffset + finalLevel * ReguBoard.squareWidth);
+        return (getY() >= ReguBoard.topOffset + finalRow * ReguBoard.squareWidth);
     }
 }

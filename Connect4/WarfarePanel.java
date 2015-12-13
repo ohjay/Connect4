@@ -2,7 +2,10 @@ package Connect4;
 
 import java.awt.Graphics;
 import java.awt.Graphics2D;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import java.awt.event.ActionEvent;
+import java.awt.Color;
 
 /**
  * A panel in which four players can duke it out on a double-sized board.
@@ -13,13 +16,16 @@ import java.awt.event.ActionEvent;
  * @author Owen Jow
  */
 public class WarfarePanel extends KPanel {
-    protected BigBoard board;
-    protected int bgId = 3;
+    private WarfareBoard board;
+    
+    public WarfarePanel() {
+        mouseListener = new WarfareMouseListener();
+    }
     
     @Override
     public void activate() {
         super.activate();
-        board = new BigBoard();
+        board = new WarfareBoard();
     }
     
     @Override
@@ -30,6 +36,34 @@ public class WarfarePanel extends KPanel {
     @Override
     public void paintComponent(Graphics g) {
         super.paintComponent(g);
-        board.draw((Graphics2D) g, bgId);
+        setBackground(Color.BLACK);
+        board.draw((Graphics2D) g, 7); // 7 being no background
+    }
+    
+    class WarfareMouseListener extends MouseAdapter {
+        
+        public void mouseClicked(MouseEvent evt) {
+            if (MouseData.x > board.leftOffset 
+                    && MouseData.x < board.leftOffset + board.boardWidth * board.squareWidth
+                    && MouseData.y > board.topOffset 
+                    && MouseData.y < board.topOffset + board.boardHeight * board.squareWidth) {
+                // Set the player's piece on the board... if the square they clicked is open
+                int rowIndex = (int) (MouseData.y - board.topOffset) / board.squareWidth;
+                int colIndex = (int) (MouseData.x - board.leftOffset) / board.squareWidth;
+                if (board.squareUnoccupied(rowIndex, colIndex)) {
+                    board.addToSquare(board.interactivePiece, rowIndex, colIndex);
+                }
+            }
+        }
+        
+        public void mouseMoved(MouseEvent evt) {
+            if (evt.getX() <= Connect4.WINDOW_LEN - Piece.SMALL_WIDTH
+                    && evt.getY() <= Connect4.WINDOW_WIDTH - Piece.SMALL_WIDTH) {
+                MouseData.x = evt.getX();
+                MouseData.y = evt.getY();
+                board.interactivePiece.setXY(MouseData.x - Piece.SMALL_WIDTH / 2, 
+                        MouseData.y - Piece.SMALL_WIDTH / 2); // center the piece around the cursor
+            }
+        }
     }
 }

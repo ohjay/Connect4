@@ -11,15 +11,7 @@ public class ReguBoard extends Board {
      * Default constructor for an empty 7x6 board.
      */
     public ReguBoard() {
-        // Positional values
-        boardWidth = 7; 
-        boardHeight = 6;
-        leftOffset = 87;
-        topOffset = 80;
-        squareWidth = 60; 
-        pieceStartHeight = 10;
-        maxNumPieces = 42;
-        
+        setPositionalValues();
         board = new Piece[boardHeight][boardWidth];
         currColor = "red";
         interactivePiece = new Piece(currColor, MouseData.x);
@@ -29,7 +21,17 @@ public class ReguBoard extends Board {
      * Initializes the board with some specific configuration and current player.
      */
     public ReguBoard(Piece[][] board, int numPieces, String currColor) {
-        // Assign positional values
+        setPositionalValues();
+        this.board = board;
+        this.numPieces = numPieces;
+        this.currColor = currColor;
+        interactivePiece = new Piece(currColor, MouseData.x);
+    }
+    
+    /**
+     * Sets positional values for a regular-sized board.
+     */
+    private void setPositionalValues() {
         boardWidth = 7; 
         boardHeight = 6;
         leftOffset = 87;
@@ -37,11 +39,6 @@ public class ReguBoard extends Board {
         squareWidth = 60; 
         pieceStartHeight = 10;
         maxNumPieces = 42;
-        
-        this.board = board;
-        this.numPieces = numPieces;
-        this.currColor = currColor;
-        interactivePiece = new Piece(currColor, MouseData.x);
     }
     
     /**
@@ -61,57 +58,6 @@ public class ReguBoard extends Board {
     }
     
     /**
-     * Checks if piece PIECE makes a connected four with any other pieces on the board.
-     * Presumably, PIECE will be the piece that was most recently played.
-     * @param piece the piece to base checks around
-     * @boolean true if there is a connected four on the board that involves the given piece
-     */
-    public boolean makesFour(Piece piece) {
-        int count1 = 0;
-        
-        // Check for vertical fours
-        int i = chooseGreater(piece.finalLevel - 3, 0); // Initialize the vertical starting row
-        for (; i < chooseLesser(piece.finalLevel + 4, boardHeight); i++) {
-            if (sameTeam(piece.color, board[i][piece.col])) {
-                count1++; // increment the vertical count
-            } else count1 = 0;
-            
-            // Return true if there's four in a row
-            if (count1 >= 4) return true;
-        }
-        
-        // Check for horizontal fours
-        i = chooseGreater(piece.col - 3, 0);  // Initialize the horizontal starting column
-        for (count1 = 0; i < chooseLesser(piece.col + 4, boardWidth); i++) {
-            if (sameTeam(piece.color, board[piece.finalLevel][i])) {
-                count1++; // increment the horizontal count
-            } else count1 = 0;
-            
-            if (count1 >= 4) return true;
-        }
-        
-        // Check for diagonal fours
-        int count2 = 0; // initializing an extra count variable
-        for (i = -4, count1 = 0; i < 4; i++) {
-            // Heading from the top-left to the bottom-right
-            if (onBoard(piece.finalLevel + i, piece.col + i)) {
-                if (sameTeam(piece.color, board[piece.finalLevel + i][piece.col + i])) count1++;
-                else count1 = 0;
-            }
-            
-            // Heading from the bottom-left to the top-right
-            if (onBoard(piece.finalLevel + i, piece.col - i)) {
-                if (sameTeam(piece.color, board[piece.finalLevel + i][piece.col - i])) count2++;
-                else count2 = 0;
-            }
-            
-            if (count1 >= 4 || count2 >= 4) return true;
-        }
-        
-        return false;
-    }
-    
-    /**
      * Returns the lowermost open row in the column COLUMN.
      * @param column an integer from 0-6
      */
@@ -122,13 +68,20 @@ public class ReguBoard extends Board {
     }
     
     /**
+     * Returns the column to which the given x-coordinate is nearest.
+     */
+    public static int getNearestCol(int x) {
+        return chooseLesser(6, Math.round((x + Piece.REG_WIDTH / 2 - leftOffset) / squareWidth));
+    }
+    
+    /**
      * Adds piece PIECE to column COLUMN.
      * Assumes that the column is not already full, and that there is no piece falling already.
      * @param piece the piece to be added
      * @param column the column to be added to
      */
     public void addToColumn(Piece piece, int column) {
-        piece.finalLevel = lowestOpenRow(column);
+        piece.finalRow = lowestOpenRow(column);
         piece.col = column;
         piece.setX(leftOffset + column * squareWidth + 2);
         numPieces++; // increment the total number of pieces
@@ -146,6 +99,7 @@ public class ReguBoard extends Board {
     /**
      * Reassigns CURR_COLOR so that it's now the other player's turn.
      */
+    @Override
     protected void switchPlayers() {
         currColor = (currColor.equals("red")) ? "black" : "red";
     }
@@ -155,7 +109,7 @@ public class ReguBoard extends Board {
      * Should be called after the interactive piece is done falling.
      */
     protected void endTurn() {
-        board[interactivePiece.finalLevel][interactivePiece.col] = interactivePiece; // add to the board
+        board[interactivePiece.finalRow][interactivePiece.col] = interactivePiece; // add to the board
         isPieceFalling = false;
         
         // Check if the piece makes four-in-a-row

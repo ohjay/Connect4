@@ -45,7 +45,7 @@ public class RemovalBoard extends ReguBoard {
                 if (piece == null) { break; }
                 board[r + 1][col] = piece; // shift every piece down one spot
                 board[r][col] = null;
-                piece.finalLevel = piece.finalLevel + 1;
+                piece.finalRow = piece.finalRow + 1;
                 upperFallingRow -= 1;
             }
         } else {

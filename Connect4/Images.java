@@ -13,20 +13,11 @@ public class Images {
     // Basic board/piece images
     static final Image SQUARE = new ImageIcon(Images.class.getResource("/images/c4Square.png")).getImage(), 
             RED_PIECE = new ImageIcon(Images.class.getResource("/images/c4RedPiece.png")).getImage(),
-            YELLOW_PIECE = new ImageIcon(Images.class.getResource("/images/c4YellowPiece.png")).getImage(),
-            GREEN_PIECE = new ImageIcon(Images.class.getResource("/images/c4GreenPiece.png")).getImage(),
-            MAGENTA_PIECE = new ImageIcon(Images.class.getResource("/images/c4MagentaPiece.png")).getImage(),
-            PURPLE_PIECE = new ImageIcon(Images.class.getResource("/images/c4PurplePiece.png")).getImage(),
             BLACK_PIECE = new ImageIcon(Images.class.getResource("/images/c4BlackPiece.png")).getImage(),
-            CYAN_PIECE = new ImageIcon(Images.class.getResource("/images/c4CyanPiece.png")).getImage(),
-            GRAY_PIECE = new ImageIcon(Images.class.getResource("/images/c4GrayPiece.png")).getImage(),
-            LIGHT_GREEN_PIECE = new ImageIcon(Images.class.getResource("/images/c4LightGreenPiece.png")).getImage(),
             GOLD_BACKGROUND_6 = new ImageIcon(Images.class.getResource("/images/gold_bg6.png")).getImage(),
             GOLD_BACKGROUND_5 = new ImageIcon(Images.class.getResource("/images/gold_bg5.png")).getImage(),
             GOLD_BACKGROUND_4 = new ImageIcon(Images.class.getResource("/images/gold_bg4.png")).getImage(),
-            GOLD_BACKGROUND_3 = new ImageIcon(Images.class.getResource("/images/gold_bg3.png")).getImage(),
-            GOLD_BACKGROUND_2 = new ImageIcon(Images.class.getResource("/images/gold_bg2.png")).getImage(),
-            GOLD_BACKGROUND_1 = new ImageIcon(Images.class.getResource("/images/gold_bg1.png")).getImage();
+            GOLD_BACKGROUND_2 = new ImageIcon(Images.class.getResource("/images/gold_bg2.png")).getImage();
     // Small board/piece images (33x33 and 36x36)
     static final Image SMALL_SQUARE = new ImageIcon(Images.class.getResource("/images/c4Square_small.png")).getImage(),
             SMALL_RED = new ImageIcon(Images.class.getResource("/images/c4RedPiece_small.png")).getImage(),

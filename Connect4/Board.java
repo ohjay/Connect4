@@ -15,6 +15,7 @@ abstract class Board {
     protected Piece[][] board; // row x col (Y-AXIS x X-AXIS)
     protected int numPieces;
     protected String currColor;
+    protected boolean warfareMode;
     Piece interactivePiece; // only 1 piece controlled at once
     
     /**
@@ -46,6 +47,11 @@ abstract class Board {
     public String getCurrPlayer() {
         return currColor;
     }
+    
+    /**
+     * Switches to the next player in the lineup.
+     */
+    abstract void switchPlayers();
     
     /**
      * Returns true if the board is filled; that is, if it contains 42 pieces.
@@ -106,10 +112,54 @@ abstract class Board {
     }
     
     /**
-     * Returns the column to which the given x-coordinate is nearest.
+     * Checks if piece PIECE makes a connected four with any other pieces on the board.
+     * Presumably, PIECE will be the piece that was most recently played.
+     * @param piece the piece to base checks around
+     * @boolean true if there is a connected four on the board that involves the given piece
      */
-    public static int getNearestCol(int x) {
-        return chooseLesser(6, Math.round((x + Piece.WIDTH / 2 - leftOffset) / squareWidth));
+    public boolean makesFour(Piece piece) {
+        int count1 = 0;
+        
+        // Check for vertical fours
+        int i = chooseGreater(piece.finalRow - 3, 0); // Initialize the vertical starting row
+        for (; i < chooseLesser(piece.finalRow + 4, boardHeight); i++) {
+            if (sameTeam(piece.color, board[i][piece.col])) {
+                count1++; // increment the vertical count
+            } else count1 = 0;
+            
+            // Return true if there's four in a row
+            if (count1 >= 4) return true;
+        }
+        
+        // Check for horizontal fours
+        i = chooseGreater(piece.col - 3, 0);  // Initialize the horizontal starting column
+        for (count1 = 0; i < chooseLesser(piece.col + 4, boardWidth); i++) {
+            if (sameTeam(piece.color, board[piece.finalRow][i])) {
+                count1++; // increment the horizontal count
+            } else count1 = 0;
+            
+            if (count1 >= 4) return true;
+        }
+        
+        // Check for diagonal fours
+        int count2 = 0; // initializing an extra count variable
+        for (i = -4, count1 = 0; i < 4; i++) {
+            // Heading from the top-left to the bottom-right
+            if (onBoard(piece.finalRow + i, piece.col + i)) {
+                if (sameTeam(piece.color, board[piece.finalRow + i][piece.col + i])) count1++;
+                else count1 = 0;
+            }
+            
+            // Heading from the bottom-left to the top-right
+            if (onBoard(piece.finalRow + i, piece.col - i)) {
+                if (sameTeam(piece.color, board[piece.finalRow + i][piece.col - i])) count2++;
+                else count2 = 0;
+            }
+            
+            if (count1 >= 4 || count2 >= 4) return true;
+        }
+        
+        return false;
     }
     
     /**
@@ -126,7 +176,7 @@ abstract class Board {
      * @param bgId the background identifier (this should be an integer from 1-6)
      */
     public void draw(Graphics2D g2, int bgId) {
-        // First, draw the background
+        // First, draw the background (if there is one)
         switch (bgId) {
             case 6:
                 g2.drawImage(Images.GOLD_BACKGROUND_6, 0, 0, null);
@@ -137,14 +187,8 @@ abstract class Board {
             case 4:
                 g2.drawImage(Images.GOLD_BACKGROUND_4, 0, 0, null);
                 break;
-            case 3:
-                g2.drawImage(Images.GOLD_BACKGROUND_3, 0, 0, null);
-                break;
             case 2:
                 g2.drawImage(Images.GOLD_BACKGROUND_2, 0, 0, null);
-                break;
-            default:
-                g2.drawImage(Images.GOLD_BACKGROUND_1, 0, 0, null);
                 break;
         }
         
@@ -157,21 +201,28 @@ abstract class Board {
             }
         }
         
-        if (interactivePiece != null) { // don't forget about the interactive piece!
-            drawInteractivePiece(g2);
-        }
-        
-        // Then, draw the board over them so it appears as if the pieces are inside the board
-        for (int i = 0; i < boardWidth; i++) { // we have to draw 7 rows' worth of squares...
-            for (int j = 0; j < boardHeight; j++) { // ...and 6 columns' worth of squares
-                g2.drawImage(Images.SQUARE, leftOffset + i * squareWidth, 
-                        topOffset + j * squareWidth, null);
+        if (!warfareMode) {
+            if (interactivePiece != null) { // don't forget about the interactive piece!
+                drawInteractivePiece(g2);
             }
+        
+            // Then, draw the board over them so it appears as if the pieces are inside the board
+            for (int i = 0; i < boardWidth; i++) { // we have to draw 7 rows' worth of squares...
+                for (int j = 0; j < boardHeight; j++) { // ...and 6 columns' worth of squares
+                    g2.drawImage(Images.SQUARE, leftOffset + i * squareWidth, 
+                            topOffset + j * squareWidth, null);
+                }
+            }
+        } else {
+            // In Warfare, we draw the interactive piece above the board
+            for (int i = 0; i < boardWidth; i++) { 
+                for (int j = 0; j < boardHeight; j++) {
+                    g2.drawImage(Images.SMALL_SQUARE, leftOffset + i * squareWidth, 
+                            topOffset + j * squareWidth, null);
+                }
+            }
+            
+            if (interactivePiece != null) { drawInteractivePiece(g2); }
         }
     }
-    
-    /**
-     * Should determine whether PIECE creates a connected four with its neighbors.
-     */
-    abstract boolean makesFour(Piece piece);
 }

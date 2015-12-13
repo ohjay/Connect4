@@ -57,8 +57,8 @@ public class RemovalPanel extends ReguC4Panel {
                     // The user may be trying to remove a piece. Let's see if they clicked on one:
                     // 1) Calculate the approximate array indices of the mouse coordinates
                     int mouseY = evt.getY();
-                    int rowIndex = (int) (mouseY - ReguBoard.topOffset) / ReguBoard.squareWidth;
-                    int colIndex = (int) (MouseData.x - ReguBoard.leftOffset) / ReguBoard.squareWidth;
+                    int rowIndex = (int) (mouseY - board.topOffset) / board.squareWidth;
+                    int colIndex = (int) (MouseData.x - board.leftOffset) / board.squareWidth;
                     
                     // 2) See if that piece is the property of the current player
                     Piece piece = board.getBoard()[rowIndex][colIndex];
@@ -67,8 +67,8 @@ public class RemovalPanel extends ReguC4Panel {
                     }
                     
                     // 3) See if we actually clicked on the piece
-                    Circle pieceCirc = new Circle(piece.getX() + Piece.RADIUS, 
-                            piece.getY() + Piece.RADIUS, Piece.RADIUS);
+                    Circle pieceCirc = new Circle(piece.getX() + Piece.REG_RADIUS, 
+                            piece.getY() + Piece.REG_RADIUS, Piece.REG_RADIUS);
                     if (pieceCirc.intersects(MouseData.x, mouseY, 1, 1)) {
                         // ... we did
                         board.removePiece(rowIndex, colIndex); // so remove the piece. :)
@@ -92,17 +92,17 @@ public class RemovalPanel extends ReguC4Panel {
             int mouseX = evt.getX();
             int mouseY = evt.getY();
             
-            if (mouseX <= Connect4.WINDOW_LEN - Piece.WIDTH) {
+            if (mouseX <= Connect4.WINDOW_LEN - Piece.REG_WIDTH) {
                 MouseData.x = mouseX;
                 if (!board.isPieceFalling) {
                     board.interactivePiece.setX(mouseX);
                 }
             }
             
-            board.shouldHidePiece = (mouseX > ReguBoard.leftOffset 
-                    && mouseX < ReguBoard.leftOffset + ReguBoard.boardWidth * ReguBoard.squareWidth
-                    && mouseY > ReguBoard.topOffset 
-                    && mouseY < ReguBoard.topOffset + ReguBoard.boardHeight * ReguBoard.squareWidth);
+            board.shouldHidePiece = (mouseX > board.leftOffset 
+                    && mouseX < board.leftOffset + board.boardWidth * board.squareWidth
+                    && mouseY > board.topOffset 
+                    && mouseY < board.topOffset + board.boardHeight * board.squareWidth);
         }
     }
 }

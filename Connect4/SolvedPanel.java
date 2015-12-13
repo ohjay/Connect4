@@ -53,7 +53,7 @@ public class SolvedPanel extends ReguC4Panel {
          */
         public void mouseMoved(MouseEvent evt) {
             if (listenerEnabled) {
-                if (evt.getX() <= Connect4.WINDOW_LEN - Piece.WIDTH) {
+                if (evt.getX() <= Connect4.WINDOW_LEN - Piece.REG_WIDTH) {
                     MouseData.x = evt.getX();
                     if (!board.isPieceFalling) {
                         board.interactivePiece.setX(MouseData.x);
