@@ -154,7 +154,7 @@ public class SolvedPanel extends ReguC4Panel {
     }
     
     /**
-     * Heuristically evalutes a Connect4 board and assigns to it a score 
+     * Heuristically evaluates a Connect4 board and assigns to it a score 
      * representing the strength of the computer's position. [This is the 
      * value that will be returned.]
      *

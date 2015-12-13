@@ -28,6 +28,6 @@ public abstract class SheetMenuPanel extends KPanel {
         Graphics2D g2 = (Graphics2D) g;
         int sheetOffset = imgIndex * Connect4.WINDOW_LEN;
         g2.drawImage(menuSheet, 0, 0, Connect4.WINDOW_LEN, Connect4.WINDOW_WIDTH, 
-            sheetOffset, 0, sheetOffset + Connect4.WINDOW_LEN, Connect4.WINDOW_WIDTH, null);
+                sheetOffset, 0, sheetOffset + Connect4.WINDOW_LEN, Connect4.WINDOW_WIDTH, null);
     }
 }
