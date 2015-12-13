@@ -19,13 +19,13 @@ public class SolvedPanel extends ReguC4Panel {
     
     @Override
     public void actionPerformed(ActionEvent evt) {
-        if (reguBoard.isPieceFalling) {
-            reguBoard.animateFallingPiece();
-        } else if (reguBoard.getCurrPlayer().equals(computerColor)) {
+        if (board.isPieceFalling) {
+            board.animateFallingPiece();
+        } else if (board.getCurrPlayer().equals(computerColor)) {
             listenerEnabled = false;
             // Run the minimax algorithm, which will update computerMove
-            minimax(reguBoard, 0, null, Integer.MIN_VALUE, Integer.MAX_VALUE);
-            reguBoard.addToColumn(reguBoard.interactivePiece, computerMove);
+            minimax(board, 0, null, Integer.MIN_VALUE, Integer.MAX_VALUE);
+            board.addToColumn(board.interactivePiece, computerMove);
         } else {
             listenerEnabled = true;
         }
@@ -39,10 +39,10 @@ public class SolvedPanel extends ReguC4Panel {
          */
         public void mouseClicked(MouseEvent evt) {
             if (listenerEnabled) {
-                if (reguBoard.interactivePiece != null && !reguBoard.isPieceFalling) {
+                if (board.interactivePiece != null && !board.isPieceFalling) {
                     int nearestCol = ReguBoard.getNearestCol(MouseData.x);
-                    if (!reguBoard.isColumnFull(nearestCol)) {
-                        reguBoard.addToColumn(reguBoard.interactivePiece, nearestCol);
+                    if (!board.isColumnFull(nearestCol)) {
+                        board.addToColumn(board.interactivePiece, nearestCol);
                     }
                 }
             }
@@ -55,8 +55,8 @@ public class SolvedPanel extends ReguC4Panel {
             if (listenerEnabled) {
                 if (evt.getX() <= Connect4.WINDOW_LEN - Piece.WIDTH) {
                     MouseData.x = evt.getX();
-                    if (!reguBoard.isPieceFalling) {
-                        reguBoard.interactivePiece.setX(MouseData.x);
+                    if (!board.isPieceFalling) {
+                        board.interactivePiece.setX(MouseData.x);
                     }
                 }
             }

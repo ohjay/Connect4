@@ -9,11 +9,11 @@ import java.awt.Graphics2D;
 public class ReguBoard {
     static final int BOARD_WIDTH = 7, BOARD_HEIGHT = 6, L_OFFSET = 87, TOP_OFFSET = 80,
             SQUARE_WIDTH = 60, PIECE_START_HEIGHT = 10;
-    private Piece[][] board; // row x col (Y-AXIS x X-AXIS)
-    private int numPieces;
-    private String currColor;
+    protected Piece[][] board; // row x col (Y-AXIS x X-AXIS)
+    protected int numPieces;
+    protected String currColor;
     Piece interactivePiece; // only 1 piece controlled at once
-    boolean isPieceFalling;
+    boolean isPieceFalling, shouldHidePiece;
     
     /**
      * Default constructor for an empty 7x6 board.
@@ -88,6 +88,14 @@ public class ReguBoard {
     }
     
     /**
+     * Describes whether or not a column is falling right now,
+     * supposedly as a result of a piece being removed.
+     */
+    public boolean isColumnFalling() {
+        return false;
+    }
+    
+    /**
      * Checks if piece PIECE makes a connected four with any other pieces on the board.
      * Presumably, PIECE will be the piece that was most recently played.
      * @param piece the piece to base checks around
@@ -143,14 +151,14 @@ public class ReguBoard {
      * @param r the row (i.e. the level on the board; think y-axis)
      * @param c the column (think x-axis)
      */
-    private static boolean onBoard(int r, int c) {
+    protected static boolean onBoard(int r, int c) {
         return (r >= 0 && r < BOARD_HEIGHT) && (c >= 0 && c < BOARD_WIDTH);
     }
     
     /**
      * Returns true if piece PIECE is on the team specified by COLOR.
      */
-    private static boolean sameTeam(String color, Piece piece) {
+    protected static boolean sameTeam(String color, Piece piece) {
         return piece != null && color.equals(piece.color);
     }
     
@@ -159,7 +167,7 @@ public class ReguBoard {
      * Given two integers, it will return whichever one is greater in value.
      * If the integers are equal in value, it will return the first one.
      */
-    private static int chooseGreater(int a, int b) {
+    protected static int chooseGreater(int a, int b) {
         return (b > a) ? b : a;
     }
     
@@ -168,7 +176,7 @@ public class ReguBoard {
      * Given two integers, it will return whichever one is smaller in value.
      * If the integers are equal in value, it will return the first one.
      */
-    private static int chooseLesser(int a, int b) {
+    protected static int chooseLesser(int a, int b) {
         return (a > b) ? b : a;
     }
     
@@ -213,6 +221,48 @@ public class ReguBoard {
     }
     
     /**
+     * Removes the piece at row ROW and column COL.
+     * If there are any pieces on top of the piece to-be-removed, they will plummet.
+     */
+    public void removePiece(int row, int col) {
+        /* Override if necessary. */
+    }
+    
+    /**
+     * Reassigns CURR_COLOR so that it's now the other player's turn.
+     */
+    protected void switchPlayers() {
+        currColor = (currColor.equals("red")) ? "black" : "red";
+    }
+    
+    /**
+     * Performs last-minute checks and ends the turn.
+     * Should be called after the interactive piece is done falling.
+     */
+    protected void endTurn() {
+        board[interactivePiece.finalLevel][interactivePiece.col] = interactivePiece; // add to the board
+        isPieceFalling = false;
+        
+        // Check if the piece makes four-in-a-row
+        if (makesFour(interactivePiece)) {
+            // If so, the game is over!
+            Connect4.returnToMainMenu();
+            return;
+        }
+        
+        // Create a new interactive piece; this one's in its final position (i.e. it is immobile)
+        if (!isBoardFull()) {
+            switchPlayers();
+            interactivePiece = new Piece(currColor, MouseData.x);
+        } else {
+            // Game's over guys, let's go home
+            interactivePiece = null;
+            Connect4.returnToMainMenu();
+            return;
+        }
+    }
+    
+    /**
      * Causes the moving piece, if there is one, to fall.
      * Should ONLY do something if there is actually a piece falling, 
      * so it is assumed that the caller has already checked for this.
@@ -220,26 +270,7 @@ public class ReguBoard {
      */
     public void animateFallingPiece() {
         if (interactivePiece.inFinalPosition()) {
-            board[interactivePiece.finalLevel][interactivePiece.col] = interactivePiece; // add to the board
-            isPieceFalling = false;
-            
-            // Check if the piece makes four-in-a-row
-            if (makesFour(interactivePiece)) {
-                // If so, the game is over!
-                Connect4.returnToMainMenu();
-                return;
-            }
-            
-            // Create a new interactive piece; this one's in its final position (i.e. it is immobile)
-            if (!isBoardFull()) {
-                currColor = (currColor.equals("red")) ? "black" : "red";
-                interactivePiece = new Piece(currColor, MouseData.x);
-            } else {
-                // Game's over guys, let's go home
-                interactivePiece = null;
-                Connect4.returnToMainMenu();
-                return;
-            }
+            endTurn();
         } else if (interactivePiece.getY() > TOP_OFFSET + SQUARE_WIDTH) {
             interactivePiece.translate(0, 4);
         } else if (interactivePiece.getY() > TOP_OFFSET) {
@@ -247,6 +278,14 @@ public class ReguBoard {
         } else {
             interactivePiece.translate(0, 2);
         }
+    }
+    
+    /**
+     * Draws the interactive piece. Pretty simple.
+     */
+    protected void drawInteractivePiece(Graphics2D g2) {
+        g2.drawImage(interactivePiece.getImage(), interactivePiece.getX(), 
+                interactivePiece.getY(), null); 
     }
     
     /**
@@ -286,9 +325,8 @@ public class ReguBoard {
             }
         }
         
-        if (interactivePiece != null) {
-            g2.drawImage(interactivePiece.getImage(), interactivePiece.getX(), 
-                    interactivePiece.getY(), null); // don't forget about the interactive piece!
+        if (interactivePiece != null) { // don't forget about the interactive piece!
+            drawInteractivePiece(g2);
         }
         
         // Then, draw the board over them so it appears as if the pieces are inside the board

@@ -11,7 +11,7 @@ import java.awt.event.MouseEvent;
  * @author Owen Jow
  */
 public abstract class ReguC4Panel extends KPanel {
-    protected ReguBoard reguBoard;
+    protected ReguBoard board;
     protected int bgId = 6;
     
     /**
@@ -20,13 +20,13 @@ public abstract class ReguC4Panel extends KPanel {
     @Override
     public void activate() {
         super.activate();
-        reguBoard = new ReguBoard();
+        board = new ReguBoard();
     }
     
     @Override
     public void actionPerformed(ActionEvent evt) {
-        if (reguBoard.isPieceFalling) {
-            reguBoard.animateFallingPiece();
+        if (board.isPieceFalling) {
+            board.animateFallingPiece();
         }
         
         repaint();
@@ -35,6 +35,6 @@ public abstract class ReguC4Panel extends KPanel {
     @Override
     public void paintComponent(Graphics g) {
         super.paintComponent(g);
-        reguBoard.draw((Graphics2D) g, bgId);
+        board.draw((Graphics2D) g, bgId);
     }
 }

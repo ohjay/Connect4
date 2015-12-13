@@ -14,7 +14,7 @@ I decided against option number one because I liked option number two better, an
 
 So yes – I'll be including a few less features than I'd initially planned. In particular, the networked two-player mode and the Board modes kinda got dropped from the lineup. Since I already made the menus for these, I'll probably end up sticking a bunch of "inadequate funding" screens all over the place. Look forward to it.
 
-Never fear: this is still more than a basic Connect4 application. After all, we've got the three other special modes (Warfare, Four by Two, and Removal), plus my Photoshop-made board and piece graphics. All is not lost...
+Never fear, though: this is still more than a basic Connect4 application. After all, we've got the three other special modes (Warfare, Four by Two, and Removal), plus my Photoshop-made board and piece graphics. All is not lost...
 
 ## Download
 This download probably does not have any viruses attached. It will require you to have the Java Runtime Environment installed, though.

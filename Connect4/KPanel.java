@@ -12,7 +12,7 @@ import javax.swing.Timer;
  * @author Owen Jow
  */
 public abstract class KPanel extends JPanel implements ActionListener {
-    private Timer timer;
+    protected Timer timer;
     protected MouseAdapter mouseListener;
     
     public void actionPerformed(ActionEvent evt) {

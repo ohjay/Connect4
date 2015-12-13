@@ -9,6 +9,7 @@ import java.awt.Point;
  */
 public class Piece {
     static final int WIDTH = 55;
+    static final double RADIUS = ((double) WIDTH) / 2;
     String color;
     private Point position;
     int col; // the piece's column

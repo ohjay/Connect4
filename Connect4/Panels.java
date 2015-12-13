@@ -21,7 +21,6 @@ public class Panels {
     static WarfarePanel warfarePanel;
     static FourByTwoPanel fourByTwoPanel;
     static RemovalPanel removalPanel;
-    static BoardsPanel boardsPanel;
     static CardLayout layout;
     static MainMenuPanel mainMenuPanel;
     static CreatorMsgPanel creatorMsgPanel;
