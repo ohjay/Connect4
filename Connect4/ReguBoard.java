@@ -5,7 +5,7 @@ package Connect4;
  * @author Owen Jow
  */
 public class ReguBoard extends Board {
-    boolean isPieceFalling, shouldHidePiece;
+    boolean isPieceFalling, shouldHidePiece; // "piece" refers to the interactive piece
     
     /**
      * Default constructor for an empty 7x6 board.
