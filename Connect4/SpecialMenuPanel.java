@@ -36,9 +36,9 @@ public class SpecialMenuPanel extends SheetMenuPanel {
                     Panels.mainMenuPanel.activate();
                     Panels.currPanel = Panels.mainMenuPanel;
                 } else if (imgIndex == 2) { // Warfare
-                    Panels.layout.show(Panels.contentPanel, "warfare");
-                    Panels.warfarePanel.activate();
-                    Panels.currPanel = Panels.warfarePanel;
+                    Panels.layout.show(Panels.contentPanel, "creatorMsg");
+                    Panels.creatorMsgPanel.activate(Panels.currPanel, "specialMenu");
+                    Panels.currPanel = Panels.creatorMsgPanel;
                 } else if (imgIndex == 3) { // Four by Two
                     Panels.layout.show(Panels.contentPanel, "fourByTwo");
                     Panels.fourByTwoPanel.activate();

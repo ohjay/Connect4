@@ -18,7 +18,6 @@ public class Panels {
     static EasyPanel easyPanel;
     static SolvedPanel solvedPanel;
     static TwoPlayerPanel twoPlayerPanel;
-    static WarfarePanel warfarePanel;
     static FourByTwoPanel fourByTwoPanel;
     static RemovalPanel removalPanel;
     static CardLayout layout;

@@ -15,7 +15,7 @@ import javax.swing.JPanel;
  * - Two-player: multiple-computer (in which humans play on different computers)
  * - Warfare (in which 4 players can play at the same time)
  * - Four by Two (in which players can place two at a time)
- * - Removal (in which players can opt to remove a piece as their turn, w/ up to 5 removals total)
+ * - Removal (in which players can opt to remove a piece as their turn)
  * - Boards (in which boards are differently shaped)
  * @author Owen Jow
  */
@@ -82,8 +82,6 @@ public class Connect4 extends JApplet {
         Panels.contentPanel.add(Panels.solvedPanel, "solved");
         Panels.twoPlayerPanel = new TwoPlayerPanel();
         Panels.contentPanel.add(Panels.twoPlayerPanel, "twoPlayer");
-        Panels.warfarePanel = new WarfarePanel();
-        Panels.contentPanel.add(Panels.warfarePanel, "warfare");
         Panels.fourByTwoPanel = new FourByTwoPanel();
         Panels.contentPanel.add(Panels.fourByTwoPanel, "fourByTwo");
         Panels.removalPanel = new RemovalPanel();

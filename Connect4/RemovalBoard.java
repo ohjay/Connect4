@@ -48,6 +48,9 @@ public class RemovalBoard extends ReguBoard {
                 piece.finalLevel = piece.finalLevel + 1;
                 upperFallingRow -= 1;
             }
+        } else {
+            switchPlayers();
+            interactivePiece = new Piece(currColor, MouseData.x);
         }
     }
     
