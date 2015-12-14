@@ -25,7 +25,7 @@ public class ReguBoard extends Board {
         this.board = board;
         this.numPieces = numPieces;
         this.currColor = currColor;
-        interactivePiece = new Piece(currColor, MouseData.x);
+        interactivePiece = new Piece(currColor, MouseData.x - Piece.REG_WIDTH / 2);
     }
     
     /**
@@ -122,7 +122,7 @@ public class ReguBoard extends Board {
         // Create a new interactive piece; this one's in its final position (i.e. it is immobile)
         if (!isBoardFull()) {
             switchPlayers();
-            interactivePiece = new Piece(currColor, MouseData.x);
+            interactivePiece = new Piece(currColor, MouseData.x - Piece.REG_WIDTH / 2);
         } else {
             // Game's over guys, let's go home
             interactivePiece = null;

@@ -74,7 +74,7 @@ public class RemovalPanel extends ReguC4Panel {
                         board.removePiece(rowIndex, colIndex); // so remove the piece. :)
                     }
                 } else {
-                    int nearestCol = ReguBoard.getNearestCol(MouseData.x);
+                    int nearestCol = board.getNearestCol(MouseData.x - Piece.REG_WIDTH / 2);
                     if (!board.isColumnFull(nearestCol)) {
                         board.addToColumn(board.interactivePiece, nearestCol);
                     }
@@ -92,10 +92,11 @@ public class RemovalPanel extends ReguC4Panel {
             int mouseX = evt.getX();
             int mouseY = evt.getY();
             
-            if (mouseX <= Connect4.WINDOW_LEN - Piece.REG_WIDTH) {
+            if (mouseX >= Piece.REG_WIDTH / 2
+                    && mouseX <= Connect4.WINDOW_LEN - Piece.REG_WIDTH / 2) {
                 MouseData.x = mouseX;
                 if (!board.isPieceFalling) {
-                    board.interactivePiece.setX(mouseX);
+                    board.interactivePiece.setX(mouseX - Piece.REG_WIDTH / 2);
                 }
             }
             

@@ -12,7 +12,7 @@ import javax.swing.JPanel;
  */
 public class SplashScreen extends JPanel {
     private static final Image SPLASH_SCREEN = 
-        new ImageIcon(SplashScreen.class.getResource("/images/c4SplashScreen.png")).getImage();
+            new ImageIcon(SplashScreen.class.getResource("/images/c4SplashScreen.png")).getImage();
     
     @Override
     public void paintComponent(Graphics g) {

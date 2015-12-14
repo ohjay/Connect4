@@ -25,7 +25,7 @@ public class TwoPlayerPanel extends ReguC4Panel {
          */
         public void mouseClicked(MouseEvent evt) {
             if (board.interactivePiece != null && !board.isPieceFalling) {
-                int nearestCol = ReguBoard.getNearestCol(MouseData.x);
+                int nearestCol = ReguBoard.getNearestCol(MouseData.x - Piece.REG_WIDTH / 2);
                 if (!board.isColumnFull(nearestCol)) {
                     board.addToColumn(board.interactivePiece, nearestCol);
                 }
@@ -36,10 +36,11 @@ public class TwoPlayerPanel extends ReguC4Panel {
          * Controls the interactive piece, and registers movement in the MouseData class.
          */
         public void mouseMoved(MouseEvent evt) {
-            if (evt.getX() <= Connect4.WINDOW_LEN - Piece.REG_WIDTH) {
-                MouseData.x = evt.getX();
+            MouseData.x = evt.getX();
+            if (MouseData.x >= Piece.REG_WIDTH / 2
+                    && MouseData.x <= Connect4.WINDOW_LEN - Piece.REG_WIDTH / 2) {
                 if (!board.isPieceFalling) {
-                    board.interactivePiece.setX(MouseData.x);
+                    board.interactivePiece.setX(MouseData.x - Piece.REG_WIDTH / 2);
                 }
             }
         }
