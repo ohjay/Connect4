@@ -12,9 +12,9 @@ That being the case, there are three obvious solutions to my problem:
 
 I decided against option number one because I liked option number two better, and I ruled out option number three because I don't think I would fool any kangaroos; they're too smart for me.
 
-So yes – I'll be including a few less features than I'd initially planned. In particular, the networked two-player mode, the Board modes, and Warfare all kinda got dropped from the lineup. Since I already made the menus for these, I'll probably end up sticking a bunch of "inadequate funding" screens all over the place. Look forward to it.
+So yes – I'll be including a few less features than I'd initially planned. In particular, the networked two-player mode and the Board modes kinda got dropped from the lineup. Since I already made the menus for these, I'll probably end up sticking a bunch of "inadequate funding" screens all over the place. Look forward to it.
 
-Never fear, though: this is still more than a basic Connect4 application. After all, we've got two other special modes (Four by Two and Removal), plus my Photoshop-made board + piece graphics. All is not lost...
+Never fear, though: this is still more than a basic Connect4 application. After all, we've got three other special modes (Warfare, Four by Two, and Removal), plus my Photoshop-made board + piece graphics. All is not lost...
 
 ## Download
 This download _probably_ does not have any viruses attached. It will require you to have the Java Runtime Environment installed, though.
@@ -26,6 +26,7 @@ Connect4 is a Swing application that allows the user to enjoy several different 
 
 - **vs CPU**: uses a depth-limited [minimax](https://en.wikipedia.org/wiki/Minimax) algorithm to choose moves for the AI player
 - **vs Human**: uses a depth-limited human to choose moves for the other player
+- **Warfare**: allows four players to play at the same time, and form alliances as they will
 - **Four by Two**: enables players to place two pieces at a time
 - **Removal**: enables players to remove one of their pieces as their turn
 

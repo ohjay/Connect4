@@ -1,43 +1,18 @@
 package Connect4;
 
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
-
 /**
  * The panel in which a user plays Connect Four against a computer of easy difficulty.
+ * (This means that the computer will not look very many turns into the future.)
  * @author Owen Jow
  */
-public class EasyPanel extends ReguC4Panel {
-    
+public class EasyPanel extends VsComputerPanel {
+    /**
+     * Constructs an "easy" panel. 
+     * Every time, the computer will look six turns into the future.
+     */
     public EasyPanel() {
-        mouseListener = new EasyMouseListener();
+        /* Implicit call to super() */
         bgId = 5;
-    }
-    
-    class EasyMouseListener extends MouseAdapter {
-        /**
-         * Sends the interactive piece (if there is one) downward, as if it were dropped.
-         */
-        public void mouseClicked(MouseEvent evt) {
-            if (board.interactivePiece != null && !board.isPieceFalling) {
-                int nearestCol = ReguBoard.getNearestCol(MouseData.x - Piece.REG_WIDTH / 2);
-                if (!board.isColumnFull(nearestCol)) {
-                    board.addToColumn(board.interactivePiece, nearestCol);
-                }
-            }
-        }
-        
-        /**
-         * Controls the interactive piece, and registers movement in the MouseData class.
-         */
-        public void mouseMoved(MouseEvent evt) {
-            MouseData.x = evt.getX();
-            if (MouseData.x >= Piece.REG_WIDTH / 2
-                    && MouseData.x <= Connect4.WINDOW_LEN - Piece.REG_WIDTH / 2) {
-                if (!board.isPieceFalling) {
-                    board.interactivePiece.setX(MouseData.x - Piece.REG_WIDTH / 2);
-                }
-            }
-        }
+        maxDepth = 6;
     }
 }
