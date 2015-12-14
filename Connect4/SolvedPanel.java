@@ -12,6 +12,6 @@ public class SolvedPanel extends VsComputerPanel {
     public SolvedPanel() {
         /* Implicit call to super() */
         bgId = 4;
-        maxDepth = 7;
+        maxDepth = 9;
     }
 }

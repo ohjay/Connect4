@@ -8,19 +8,48 @@ package Connect4;
  */
 public class AI {
     static final String COMPUTER_COLOR = "red";
-    static final int INFINITY = 500000;
-    static int computerMove; // the computer's next move, determined by the algorithm below
+    static final int INFINITY = 15625; // 15625 = 5^6
     
     //================================================================================
     // Minimax solution logic (with alpha-beta pruning)
     //================================================================================
     
     /**
+     * Returns the best move for the computer, given a board state BOARD and a maximum depth DEPTH.
+     * Assumes that nobody has won the game yet.
+     * Also assumes that it is the computer's turn.
+     */
+    public static int getBestComputerMove(ReguBoard board, int depth) {
+        int computerMove = 0; // the best computer move
+        int maxScore = Integer.MIN_VALUE; 
+        for (int c = board.boardWidth - 1; c >= 0; c--) {
+            if (!board.isColumnFull(c)) { // if a column's not full, then it's a possible move
+                // Create a piece for the computer to [theoretically] place
+                int lowRow = board.lowestOpenRow(c);
+                Piece p = new Piece(board.getCurrPlayer(), c, lowRow);
+                
+                // Simulate the new board configuration
+                Piece[][] newBoard = board.cloneBoard();
+                newBoard[lowRow][c] = p;
+                ReguBoard b = new ReguBoard(newBoard, board.getNumPieces() + 1, board.otherPlayer());
+                
+                // Check if the move yields the best score we've seen so far
+                int score = minimax(b, depth - 1, p, -2 * AI.INFINITY, 2 * AI.INFINITY);
+                if (score > maxScore) {
+                    maxScore = score;
+                    computerMove = c;
+                }
+            }
+        }
+        
+        return computerMove;
+    }
+    
+    /**
      * Evaluates MAX_DEPTH levels of game state possibilities with the minimax algorithm 
      * and returns the computer's maximal heuristic game score. Will also set the COMPUTER_MOVE 
      * variable to the value of the optimal column in which the computer can play. This method 
-     * will always assume that the computer plays as the color COMPUTER_COLOR,
-     * both of which are given as instance variables of the SolvedPanel class.
+     * will always assume that the computer plays as the color COMPUTER_COLOR.
      * 
      * @param board the board over which the algorithm is being run
      * @param depth the number of turns (/current recursive depth). Always begins at 0
@@ -28,10 +57,10 @@ public class AI {
      * @param alpha the maximum score that the computer is guaranteed to get
      * @param beta the minimum score that the player is guaranteed to get
      */
-    public static int minimax(ReguBoard board, int depth, Piece prevPiece, int alpha, int beta) {
-        if (prevPiece != null && board.makesFour(prevPiece)) {
-            if (COMPUTER_COLOR.equals(prevPiece.color)) { return INFINITY; }
-            else { return -INFINITY; }
+    private static int minimax(ReguBoard board, int depth, Piece prevPiece, int alpha, int beta) {
+        if (board.makesFour(prevPiece)) {
+            if (COMPUTER_COLOR.equals(prevPiece.color)) { return INFINITY + depth * 5; }
+            else { return -INFINITY - depth * 5; }
         } else if (board.isBoardFull()) {
             return 0;
         } else if (depth == 0) {
@@ -58,11 +87,10 @@ public class AI {
                     int score = minimax(b, depth - 1, p, alpha, beta);
                     if (score > maxScore) {
                         maxScore = score;
-                        computerMove = c;
                         
-                        /* // Alpha-beta pruning (alpha cutoff)
+                        // Alpha-beta pruning (alpha cutoff)
                         alpha = Math.max(alpha, maxScore);
-                        if (beta <= alpha) { break; } */
+                        if (beta <= alpha) { break; }
                     }
                 }
             }
@@ -85,11 +113,10 @@ public class AI {
                     int score = minimax(b, depth - 1, p, alpha, beta);
                     if (score < minScore) {
                         minScore = score;
-                        computerMove = c;
                         
-                        /* // Cut off fruitless subtrees (beta cutoff)
+                        // Cut off fruitless subtrees (beta cutoff)
                         beta = Math.min(beta, minScore);
-                        if (beta <= alpha) { break; } */
+                        if (beta <= alpha) { break; }
                     }
                 }
             }
@@ -108,7 +135,7 @@ public class AI {
      * @param board the Connect4 board to evaluate
      * @return a score heuristic for the computer (positive is good, negative is bad)
      */
-    public static int heuristicEval(ReguBoard board) {
+    private static int heuristicEval(ReguBoard board) {
         Piece[][] b = board.getBoard();
         return getHorizontalScore(b) + getVerticalScore(b) + getDiagonalScore(b);
     }
@@ -117,11 +144,8 @@ public class AI {
      * Returns the score that the computer receives for [potential] horizontal piece combinations.
      * Points are awarded for chains of two or three that have the potential to become four.
      * 
-     * For such chains of two, 100 points will be awarded; for such chains of three, 1000 points
-     * will be awarded (to Gryffindor). Finally, for chains of four, INFINITY points will be awarded
-     * (because chains of four signify that the game has been won).
-     * 
-     * Equivalent points will also be deducted for chains belonging to the opposing color.
+     * For such chains of two, 25 points will be awarded; for such chains of three, 125 points
+     * will be awarded (to Gryffindor). No chains of four should exist.
      * 
      * @param b an array representation of the Connect4 board to evaluate
      * @return a horizontal score heuristic
@@ -189,43 +213,65 @@ public class AI {
     
     /**
      * Returns the score that the computer receives for [potential] diagonal piece combinations.
-     * The hierarchy of points awarded is similar to that of the horizontal scoring method.
-     * The distinction is that this method only checks for diagonal threes and fours at the moment.
+     * The hierarchy of points awarded is identical to that of the horizontal scoring method.
      * 
      * @param b an array representation of the Connect4 board to evaluate
      * @return a diagonal score heuristic
      */
     private static int getDiagonalScore(Piece[][] b) {
         int score = 0;
+        Piece p;
+        CountTracker tracker = new CountTracker();
         
-        for (int c = 0; c < 4; c++) {
-            String origColor; // the color of the first piece
-            
-            // Traveling in a bottom-right direction
-            for (int r = 3; r >= 0; r--) {
-                if (b[r][c] == null) { break; } // because there can't be any pieces above this one
-                origColor = b[r][c].color;
-                if (b[r + 1][c + 1] != null && origColor.equals(b[r + 1][c + 1].color)
-                        && b[r + 2][c + 2] != null && origColor.equals(b[r + 2][c + 2].color)) {
-                    if ((r > 0 && c > 0 && b[r - 1][c - 1] == null) 
-                            || (r < 3 && c < 4 && b[r + 3][c + 3] == null)) {
-                        // We'll call it a three with potential
-                        score += (origColor.equals(COMPUTER_COLOR)) ? 1000 : -1000;
+        // Traveling in a bottom-right direction
+        for (int sc = 0; sc <= 3; sc++) {
+            for (int sr = 0; sr <= 2; sr++) {
+                // We have our starting point at (sr, sc).
+                // Now iterate until we hit the bottom
+                
+                for (int r = sr, c = sc; r < 6 && c < 7; r++, c++) { // 6 & 7 are board dimensions
+                    p = b[r][c];
+                    
+                    if (p == null) {
+                        tracker.recentEmptyCount += 1;
+                    } else if (p.color.equals(tracker.color)) {
+                        tracker.nrEmptyCount += tracker.recentEmptyCount;
+                        tracker.recentEmptyCount = 0;
+                        tracker.fullCount += 1;
+                    } else {
+                        score += tracker.getScore();
+                        tracker.reset(p.color, true, true);
                     }
                 }
+                
+                score += tracker.getScore();
+                tracker.reset("", false, false);
             }
-            
-            // Traveling in an up-right direction
-            for (int r = 5; r >= 2; r--) {
-                if (b[r][c] == null) { break; }
-                origColor = b[r][c].color;
-                if (b[r - 1][c + 1] != null && origColor.equals(b[r - 1][c + 1].color)
-                        && b[r - 2][c + 2] != null && origColor.equals(b[r - 2][c + 2].color)) {
-                    if ((r < 5 && c > 0 && b[r + 1][c - 1] == null) 
-                            || (r > 2 && c < 4 && b[r - 3][c + 3] == null)) {
-                        score += (origColor.equals(COMPUTER_COLOR)) ? 1000 : -1000;
+        }
+        
+        // Traveling in an up-right direction
+        for (int sc = 0; sc <= 3; sc++) {
+            for (int sr = 3; sr <= 5; sr++) {
+                // Again, we have our starting point at (sr, sc).
+                // This time, we'll iterate till we hit the top
+                
+                for (int r = sr, c = sc; r >= 0 && c < 7; r--, c++) {
+                    p = b[r][c];
+                    
+                    if (p == null) {
+                        tracker.recentEmptyCount += 1;
+                    } else if (p.color.equals(tracker.color)) {
+                        tracker.nrEmptyCount += tracker.recentEmptyCount;
+                        tracker.recentEmptyCount = 0;
+                        tracker.fullCount += 1;
+                    } else {
+                        score += tracker.getScore();
+                        tracker.reset(p.color, true, true);
                     }
                 }
+                
+                score += tracker.getScore();
+                tracker.reset("", false, false);
             }
         }
         
@@ -250,7 +296,7 @@ public class AI {
         int getScore() {
             if (!color.isEmpty() && fullCount + nrEmptyCount + recentEmptyCount >= 4) {
                 return (color.equals(COMPUTER_COLOR)) ? 
-                        (int) (Math.pow(10, fullCount)) : (int) (-Math.pow(10, fullCount));
+                        (int) (Math.pow(5, fullCount)) : (int) (-Math.pow(5, fullCount));
             } else {
                 return 0;
             }

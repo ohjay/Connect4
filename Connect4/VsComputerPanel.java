@@ -33,9 +33,8 @@ public class VsComputerPanel extends ReguC4Panel {
                 board.addToColumn(board.interactivePiece, 3);
                 turn1 = false;
             } else {
-                // Run the minimax algorithm, which will update computerMove
-                AI.minimax(board, maxDepth, null, -2 * AI.INFINITY, 2 * AI.INFINITY);
-                board.addToColumn(board.interactivePiece, AI.computerMove);
+                // Run the minimax algorithm to get the computer's next move
+                board.addToColumn(board.interactivePiece, AI.getBestComputerMove(board, maxDepth));
             }
         } else {
             listenerEnabled = true;
