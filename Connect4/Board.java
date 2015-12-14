@@ -42,6 +42,24 @@ abstract class Board {
     }
     
     /**
+     * Adds piece P to the internal board at row R and column C.
+     * Meant to be used for simulation only.
+     */
+    public void addPiece(Piece p, int r, int c) {
+        board[r][c] = p;
+        numPieces++;
+    }
+    
+    /**
+     * Removes the piece at (R, C) from the internal board.
+     * Meant to be used alongside updateBoardWithPiece as a game state simulator.
+     */
+    public void removePiece(int r, int c) {
+        board[r][c] = null;
+        numPieces--;
+    }
+    
+    /**
      * Returns the color of the player that is next to play.
      */
     public String getCurrPlayer() {

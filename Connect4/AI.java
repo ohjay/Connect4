@@ -34,10 +34,15 @@ public class AI {
                 ReguBoard b = new ReguBoard(newBoard, board.getNumPieces() + 1, board.otherPlayer());
                 
                 // Check if the move yields the best score we've seen so far
-                int score = minimax(b, depth - 1, p, -2 * AI.INFINITY, 2 * AI.INFINITY);
+                int score = minimax(b, depth - 1, p, -2 * INFINITY, 2 * INFINITY, false);
                 if (score > maxScore) {
                     maxScore = score;
                     computerMove = c;
+                    
+                    // INFINITY means the computer's won!
+                    if (score >= INFINITY) {
+                        break;
+                    }
                 }
             }
         }
@@ -47,8 +52,7 @@ public class AI {
     
     /**
      * Evaluates MAX_DEPTH levels of game state possibilities with the minimax algorithm 
-     * and returns the computer's maximal heuristic game score. Will also set the COMPUTER_MOVE 
-     * variable to the value of the optimal column in which the computer can play. This method 
+     * and returns the computer's maximal heuristic game score. This method 
      * will always assume that the computer plays as the color COMPUTER_COLOR.
      * 
      * @param board the board over which the algorithm is being run
@@ -56,8 +60,10 @@ public class AI {
      * @param prevPiece the piece that was previously played
      * @param alpha the maximum score that the computer is guaranteed to get
      * @param beta the minimum score that the player is guaranteed to get
+     * @param isComputer a boolean specifying whether it's the computer's turn or not
      */
-    private static int minimax(ReguBoard board, int depth, Piece prevPiece, int alpha, int beta) {
+    private static int minimax(ReguBoard board, int depth, Piece prevPiece, int alpha, 
+            int beta, boolean isComputer) {
         if (board.makesFour(prevPiece)) {
             if (COMPUTER_COLOR.equals(prevPiece.color)) { return INFINITY + depth * 5; }
             else { return -INFINITY - depth * 5; }
@@ -69,9 +75,8 @@ public class AI {
         }
         
         // The game isn't over, so we'll continue the recursion
-        if (board.getCurrPlayer().equals(COMPUTER_COLOR)) {
+        if (isComputer) {
             // Since it's the computer's turn, we want the MAX heuristic score
-            int maxScore = Integer.MIN_VALUE; 
             for (int c = board.boardWidth - 1; c >= 0; c--) {
                 if (!board.isColumnFull(c)) { // if a column's not full, then it's a possible move
                     // Create a piece for the computer to [theoretically] place
@@ -84,21 +89,14 @@ public class AI {
                     ReguBoard b = new ReguBoard(newBoard, board.getNumPieces() + 1, board.otherPlayer());
                     
                     // Check if the move yields the best score we've seen so far
-                    int score = minimax(b, depth - 1, p, alpha, beta);
-                    if (score > maxScore) {
-                        maxScore = score;
-                        
-                        // Alpha-beta pruning (alpha cutoff)
-                        alpha = Math.max(alpha, maxScore);
-                        if (beta <= alpha) { break; }
-                    }
+                    alpha = Math.max(alpha, minimax(b, depth - 1, p, alpha, beta, false));
+                    if (beta <= alpha) { break; }
                 }
             }
             
-            return maxScore;
+            return alpha;
         } else {
             // It's the player's turn, who wants to MINIMIZE the computer's score
-            int minScore = Integer.MAX_VALUE;
             for (int c = board.boardWidth - 1; c >= 0; c--) {
                 if (!board.isColumnFull(c)) { // if a column's not full, then it's a possible move
                     // Create a piece for the computer to [theoretically] place
@@ -110,18 +108,13 @@ public class AI {
                     newBoard[lowRow][c] = p;
                     ReguBoard b = new ReguBoard(newBoard, board.getNumPieces() + 1, board.otherPlayer());
                 
-                    int score = minimax(b, depth - 1, p, alpha, beta);
-                    if (score < minScore) {
-                        minScore = score;
-                        
-                        // Cut off fruitless subtrees (beta cutoff)
-                        beta = Math.min(beta, minScore);
-                        if (beta <= alpha) { break; }
-                    }
+                    // Cut off fruitless subtrees (beta cutoff)
+                    beta = Math.min(beta, minimax(b, depth - 1, p, alpha, beta, true));
+                    if (beta <= alpha) { break; }
                 }
             }
             
-            return minScore;
+            return beta;
         }
     }
     
