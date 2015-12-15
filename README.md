@@ -21,6 +21,13 @@ This download _probably_ does not have any viruses attached. It will require you
 
 - Link: [v1.0.0 JAR file](../master/dist/v1.0.0/Connect4_v1.0.0.jar?raw=true)
 
+## Implementation Details
+#### Artificially Intelligent Gameplay
+[Insert intelligent explanation/discourse on minimax here.]
+
+#### Everything Else
+"Everything else" was just a bunch of standard game programming: switching between JPanels, running events on timers/mouse actions, and checking whether or not someone just connected four. If you have any specific questions about this stuff, feel free to peruse my code or send me an anonymous email.
+
 ## Game Modes
 Connect4 is a Swing application that allows the user to enjoy several different game modes:
 

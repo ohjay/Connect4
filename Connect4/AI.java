@@ -9,20 +9,19 @@ package Connect4;
 public class AI {
     static final String COMPUTER_COLOR = "red";
     static final int INFINITY = 15625; // 15625 = 5^6
-    
-    //================================================================================
-    // Minimax solution logic (with alpha-beta pruning)
-    //================================================================================
+    static final int[] SELECTION_ORDER = new int[] {3, 4, 2, 5, 1, 6, 0}; // column choices
     
     /**
      * Returns the best move for the computer, given a board state BOARD and a maximum depth DEPTH.
      * Assumes that nobody has won the game yet.
      * Also assumes that it is the computer's turn.
+     *
+     * This method is the AI's interface with the rest of the world.
      */
     public static int getBestComputerMove(ReguBoard board, int depth) {
         int computerMove = 0; // the best computer move
         int maxScore = Integer.MIN_VALUE; 
-        for (int c = board.boardWidth - 1; c >= 0; c--) {
+        for (int c : SELECTION_ORDER) {
             if (!board.isColumnFull(c)) { // if a column's not full, then it's a possible move
                 // Create a piece for the computer to [theoretically] place
                 int lowRow = board.lowestOpenRow(c);
@@ -34,21 +33,27 @@ public class AI {
                 ReguBoard b = new ReguBoard(newBoard, board.getNumPieces() + 1, board.otherPlayer());
                 
                 // Check if the move yields the best score we've seen so far
-                int score = minimax(b, depth - 1, p, -2 * INFINITY, 2 * INFINITY, false);
+                int score = minimax(b, depth - 1, p, Integer.MIN_VALUE, Integer.MAX_VALUE, false);
+                System.out.println("[Column " + c + "] The computer is considering " + score); // debugging output
                 if (score > maxScore) {
                     maxScore = score;
                     computerMove = c;
                     
-                    // INFINITY means the computer's won!
-                    if (score >= INFINITY) {
+                    // INFINITY (+ depth * 5) means the computer's won!
+                    if (score == INFINITY + depth * 5) {
                         break;
                     }
                 }
             }
         }
         
+        System.out.println("\n==========\n"); // formatting for debugging output
         return computerMove;
     }
+    
+    //================================================================================
+    // Minimax solution logic (with alpha-beta pruning)
+    //================================================================================
     
     /**
      * Evaluates MAX_DEPTH levels of game state possibilities with the minimax algorithm 
@@ -77,7 +82,7 @@ public class AI {
         // The game isn't over, so we'll continue the recursion
         if (isComputer) {
             // Since it's the computer's turn, we want the MAX heuristic score
-            for (int c = board.boardWidth - 1; c >= 0; c--) {
+            for (int c : SELECTION_ORDER) {
                 if (!board.isColumnFull(c)) { // if a column's not full, then it's a possible move
                     // Create a piece for the computer to [theoretically] place
                     int lowRow = board.lowestOpenRow(c);
@@ -97,7 +102,7 @@ public class AI {
             return alpha;
         } else {
             // It's the player's turn, who wants to MINIMIZE the computer's score
-            for (int c = board.boardWidth - 1; c >= 0; c--) {
+            for (int c : SELECTION_ORDER) {
                 if (!board.isColumnFull(c)) { // if a column's not full, then it's a possible move
                     // Create a piece for the computer to [theoretically] place
                     int lowRow = board.lowestOpenRow(c);
@@ -107,7 +112,7 @@ public class AI {
                     Piece[][] newBoard = board.cloneBoard();
                     newBoard[lowRow][c] = p;
                     ReguBoard b = new ReguBoard(newBoard, board.getNumPieces() + 1, board.otherPlayer());
-                
+                    
                     // Cut off fruitless subtrees (beta cutoff)
                     beta = Math.min(beta, minimax(b, depth - 1, p, alpha, beta, true));
                     if (beta <= alpha) { break; }
@@ -272,7 +277,7 @@ public class AI {
     }
     
     /**
-     * Used to keep track of connected runs during evaluation of game states.
+     * A tool to keep track of connected runs during game state evaluation.
      *
      * Includes a tally of empty spaces during a run, so that the tracker
      * can take disjoint sets of pieces into account.
@@ -288,6 +293,7 @@ public class AI {
          */
         int getScore() {
             if (!color.isEmpty() && fullCount + nrEmptyCount + recentEmptyCount >= 4) {
+                fullCount = Math.min(fullCount, 4); // 5 unconnected isn't actually any better
                 return (color.equals(COMPUTER_COLOR)) ? 
                         (int) (Math.pow(5, fullCount)) : (int) (-Math.pow(5, fullCount));
             } else {

@@ -115,6 +115,7 @@ public class ReguBoard extends Board {
         // Check if the piece makes four-in-a-row
         if (makesFour(interactivePiece)) {
             // If so, the game is over!
+            System.out.println(this); // debugging output (state of the board @ end of game)
             Connect4.returnToMainMenu();
             return;
         }
@@ -147,5 +148,30 @@ public class ReguBoard extends Board {
         } else {
             interactivePiece.translate(0, 2);
         }
+    }
+    
+    /**
+     * String representation of this board.
+     */
+    @Override
+    public String toString() {
+        String stringRepr = "";
+        boolean firstCol; // whether the current piece is in the first column
+        
+        for (Piece[] pArr : board) {
+            stringRepr += "[";
+            firstCol = true;
+            for (Piece p : pArr) {
+                if (firstCol) {
+                    stringRepr += p;
+                    firstCol = false;
+                } else {
+                    stringRepr += ", " + p;
+                }
+            }
+            stringRepr += "]\n";
+        }
+        
+        return stringRepr;
     }
 }

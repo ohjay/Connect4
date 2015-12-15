@@ -119,4 +119,13 @@ public class Piece {
     public boolean inFinalPosition() {
         return (getY() >= ReguBoard.topOffset + finalRow * ReguBoard.squareWidth);
     }
+    
+    /**
+     * Returns the string representation of a piece.
+     * Includes information about the piece's color and its coordinates within the board.
+     */
+    @Override
+    public String toString() {
+        return color + " piece @ (" + finalRow + ", " + col + ")";
+    }
 }

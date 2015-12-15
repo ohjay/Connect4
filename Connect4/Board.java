@@ -32,8 +32,8 @@ abstract class Board {
      */
     public Piece[][] cloneBoard() {
         Piece[][] clone = new Piece[boardHeight][boardWidth];
-        for (int i = 0; i < board.length; i++) {
-            for (int j = 0; j < board.length; j++) {
+        for (int i = 0; i < boardHeight; i++) {
+            for (int j = 0; j < boardWidth; j++) {
                 clone[i][j] = board[i][j];
             }
         }
@@ -162,16 +162,21 @@ abstract class Board {
         // Check for diagonal fours
         int count2 = 0; // initializing an extra count variable
         for (i = -4, count1 = 0; i < 4; i++) {
-            // Heading from the top-left to the bottom-right
-            if (onBoard(piece.finalRow + i, piece.col + i)) {
-                if (sameTeam(piece.color, board[piece.finalRow + i][piece.col + i])) count1++;
-                else count1 = 0;
-            }
+            if (i == 0) { // this is the piece itself, so we know it's the same color
+                count1++;
+                count2++;
+            } else {
+                // Heading from the top-left to the bottom-right
+                if (onBoard(piece.finalRow + i, piece.col + i)) {
+                    if (sameTeam(piece.color, board[piece.finalRow + i][piece.col + i])) count1++;
+                    else count1 = 0;
+                }
             
-            // Heading from the bottom-left to the top-right
-            if (onBoard(piece.finalRow + i, piece.col - i)) {
-                if (sameTeam(piece.color, board[piece.finalRow + i][piece.col - i])) count2++;
-                else count2 = 0;
+                // Heading from the bottom-left to the top-right
+                if (onBoard(piece.finalRow + i, piece.col - i)) {
+                    if (sameTeam(piece.color, board[piece.finalRow + i][piece.col - i])) count2++;
+                    else count2 = 0;
+                }
             }
             
             if (count1 >= 4 || count2 >= 4) return true;
