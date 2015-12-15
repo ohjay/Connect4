@@ -6,15 +6,15 @@ The life we know is short, and it has a definite ending. What does that mean? It
 
 That being the case, there are three obvious solutions to my problem:
 
-- **Number one**: I work really hard, sacrifice a few days of my life, and finish every feature I originally had in mind. 
-- **Number two**: I strip my game down to a more core set of functionalities, and therefore spend a little less time on the repetitive or implementationally uninteresting components. 
+- **Number one**: I work really hard, sacrifice a few days of my life, and get this thing done (right down to every last feature!).
+- **Number two**: I strip my game down to a more core set of functionalities, and thereby spend a little less time on repetitive or implementationally uninteresting components. 
 - And finally **solution number three**: I fake my death, move to Australia, and start a fresh new life as a kangaroo.
 
 I decided against option number one because I liked option number two better, and I ruled out option number three because I don't think I would fool any kangaroos; they're too smart for me.
 
 So yes – I'll be including a few less features than I'd initially planned. In particular, the networked two-player mode and the Board modes kinda got dropped from the lineup. Since I already made the menus for these, I'll probably end up sticking a bunch of "inadequate funding" screens all over the place. Look forward to it.
 
-Never fear, though: this is still more than a basic Connect4 application. After all, we've got three other special modes (Warfare, Four by Two, and Removal), plus my Photoshop-made board + piece graphics. All is not lost...
+Never fear, though: this is still more than your basic Connect4 application. After all, we've got three other special modes (Warfare, Four by Two, and Removal), plus my Photoshop-made board + piece graphics. All is not lost...
 
 ## Download
 This download _probably_ does not have any viruses attached. It will require you to have the Java Runtime Environment installed, though.

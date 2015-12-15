@@ -152,22 +152,16 @@ public class ReguBoard extends Board {
     
     /**
      * String representation of this board.
+     * Represents red pieces as "R", black pieces as "B", and empty spaces as "x".
      */
     @Override
     public String toString() {
         String stringRepr = "";
-        boolean firstCol; // whether the current piece is in the first column
-        
+
         for (Piece[] pArr : board) {
-            stringRepr += "[";
-            firstCol = true;
+            stringRepr += "[ ";
             for (Piece p : pArr) {
-                if (firstCol) {
-                    stringRepr += p;
-                    firstCol = false;
-                } else {
-                    stringRepr += ", " + p;
-                }
+                stringRepr += (p == null) ? "x " : p.color.substring(0, 1).toUpperCase() + " ";
             }
             stringRepr += "]\n";
         }
