@@ -23,5 +23,5 @@ public class Panels {
     static RemovalPanel removalPanel;
     static CardLayout layout;
     static MainMenuPanel mainMenuPanel;
-    static CreatorMsgPanel creatorMsgPanel;
+    static ClickDisplayPanel displayPanel;
 }

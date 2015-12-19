@@ -36,17 +36,17 @@ public class SpecialMenuPanel extends SheetMenuPanel {
                     Panels.mainMenuPanel.activate();
                     Panels.currPanel = Panels.mainMenuPanel;
                 } else if (imgIndex == 2) { // Warfare
-                    Panels.layout.show(Panels.contentPanel, "warfare");
-                    Panels.warfarePanel.activate();
-                    Panels.currPanel = Panels.warfarePanel;
+                    Panels.layout.show(Panels.contentPanel, "display");
+                    Panels.displayPanel.activate(Panels.warfarePanel, "warfare", Images.WARFARE_INSTRS);
+                    Panels.currPanel = Panels.displayPanel;
                 } else if (imgIndex == 3) { // Four by Two
-                    Panels.layout.show(Panels.contentPanel, "fourByTwo");
-                    Panels.fourByTwoPanel.activate();
-                    Panels.currPanel = Panels.fourByTwoPanel;
+                    Panels.layout.show(Panels.contentPanel, "display");
+                    Panels.displayPanel.activate(Panels.fourByTwoPanel, "fourByTwo", Images.FOUR_BY_TWO_INSTRS);
+                    Panels.currPanel = Panels.displayPanel;
                 } else { // Removal
-                    Panels.layout.show(Panels.contentPanel, "removal");
-                    Panels.removalPanel.activate();
-                    Panels.currPanel = Panels.removalPanel;
+                    Panels.layout.show(Panels.contentPanel, "display");
+                    Panels.displayPanel.activate(Panels.removalPanel, "removal", Images.REMOVAL_INSTRS);
+                    Panels.currPanel = Panels.displayPanel;
                 }
             } 
         }

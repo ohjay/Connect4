@@ -89,9 +89,9 @@ public class Connect4 extends JApplet {
         Panels.removalPanel = new RemovalPanel();
         Panels.contentPanel.add(Panels.removalPanel, "removal");
         
-        // Initialize the creator message panel
-        Panels.creatorMsgPanel = new CreatorMsgPanel();
-        Panels.contentPanel.add(Panels.creatorMsgPanel, "creatorMsg");
+        // Initialize the display message panel
+        Panels.displayPanel = new ClickDisplayPanel();
+        Panels.contentPanel.add(Panels.displayPanel, "display");
     }
     
     /**

@@ -35,14 +35,14 @@ public class VsHumanMenuPanel extends MenuPanel {
                     Panels.mainMenuPanel.activate();
                     Panels.currPanel = Panels.mainMenuPanel;
                 } else if (imgIndex == 2) { // it's game time
-                    Panels.layout.show(Panels.contentPanel, "twoPlayer");
-                    Panels.twoPlayerPanel.activate();
-                    Panels.currPanel = Panels.twoPlayerPanel;
+                    Panels.layout.show(Panels.contentPanel, "display");
+                    Panels.displayPanel.activate(Panels.twoPlayerPanel, "twoPlayer", Images.VS_HUMAN_INSTRS);
+                    Panels.currPanel = Panels.displayPanel;
                 } else {
                     // No networked connection! Sorry, users
-                    Panels.layout.show(Panels.contentPanel, "creatorMsg");
-                    Panels.creatorMsgPanel.activate(Panels.currPanel, "vsHumanMenu");
-                    Panels.currPanel = Panels.creatorMsgPanel;
+                    Panels.layout.show(Panels.contentPanel, "display");
+                    Panels.displayPanel.activate(Panels.currPanel, "vsHumanMenu", Images.CREATOR_MSG);
+                    Panels.currPanel = Panels.displayPanel;
                 }
             }
         }

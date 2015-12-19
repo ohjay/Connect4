@@ -36,9 +36,9 @@ public class BoardsMenuPanel extends SheetMenuPanel {
                     Panels.mainMenuPanel.activate();
                     Panels.currPanel = Panels.mainMenuPanel;
                 } else {
-                    Panels.layout.show(Panels.contentPanel, "creatorMsg");
-                    Panels.creatorMsgPanel.activate(Panels.currPanel, "boardsMenu");
-                    Panels.currPanel = Panels.creatorMsgPanel;
+                    Panels.layout.show(Panels.contentPanel, "display");
+                    Panels.displayPanel.activate(Panels.currPanel, "boardsMenu", Images.CREATOR_MSG);
+                    Panels.currPanel = Panels.displayPanel;
                 }
             } 
         }

@@ -44,5 +44,11 @@ public class Images {
     static final Image SPECIAL_MENU_SHEET = new ImageIcon(Images.class.getResource("/images/specialMenuSheet.png")).getImage(),
             BOARDS_MENU_SHEET = new ImageIcon(Images.class.getResource("/images/boardsMenuSheet.png")).getImage();
     // Creator message
-    static final Image CREATOR_MSG_SCREEN = new ImageIcon(Images.class.getResource("/images/creatorMessage.png")).getImage();
+    static final Image CREATOR_MSG = new ImageIcon(Images.class.getResource("/images/creatorMessage.png")).getImage();
+    // Pre-game instruction messages
+    static final Image VS_CPU_INSTRS = new ImageIcon(Images.class.getResource("/images/vsCompInstrs.png")).getImage(),
+            VS_HUMAN_INSTRS = new ImageIcon(Images.class.getResource("/images/vsHumanInstrs.png")).getImage(),
+            WARFARE_INSTRS = new ImageIcon(Images.class.getResource("/images/warfareInstrs.png")).getImage(),
+            FOUR_BY_TWO_INSTRS = new ImageIcon(Images.class.getResource("/images/fourByTwoInstrs.png")).getImage(),
+            REMOVAL_INSTRS = new ImageIcon(Images.class.getResource("/images/removalInstrs.png")).getImage();
 }

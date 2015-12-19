@@ -34,13 +34,13 @@ public class VsCPUMenuPanel extends MenuPanel {
             if (imgIndex != 0) {
                 Panels.currPanel.deactivate();
                 if (imgIndex == 1) { // easy CPU
-                    Panels.layout.show(Panels.contentPanel, "easy");
-                    Panels.easyPanel.activate();
-                    Panels.currPanel = Panels.easyPanel;
+                    Panels.layout.show(Panels.contentPanel, "display");
+                    Panels.displayPanel.activate(Panels.easyPanel, "easy", Images.VS_CPU_INSTRS);
+                    Panels.currPanel = Panels.displayPanel;
                 } else if (imgIndex == 2) { // hard CPU
-                    Panels.layout.show(Panels.contentPanel, "solved");
-                    Panels.solvedPanel.activate();
-                    Panels.currPanel = Panels.solvedPanel;
+                    Panels.layout.show(Panels.contentPanel, "display");
+                    Panels.displayPanel.activate(Panels.solvedPanel, "solved", Images.VS_CPU_INSTRS);
+                    Panels.currPanel = Panels.displayPanel;
                 } else { // main menu
                     Panels.layout.show(Panels.contentPanel, "mainMenu");
                     Panels.mainMenuPanel.activate();
