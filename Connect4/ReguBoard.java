@@ -35,9 +35,9 @@ public class ReguBoard extends Board {
         boardWidth = 7; 
         boardHeight = 6;
         leftOffset = 87;
-        topOffset = 90;
+        topOffset = 100;
         squareWidth = 60; 
-        pieceStartHeight = 15;
+        pieceStartHeight = 20;
         maxNumPieces = 42;
     }
     

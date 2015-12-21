@@ -21,8 +21,9 @@ abstract class Board {
     boolean gameOver, toMMHighlighted;
     
     // Overlay image positioning coordinates
-    private static final int GAME_OVER_Y = 230, TO_MM_X = 140, TO_MM_Y = 500;
+    private static final int GAME_OVER_Y = 230, TO_MM_X = 140, TO_MM_Y = 500, WF_MM_Y = 530;
     static final Rectangle TO_MM_RECT = new Rectangle(TO_MM_X, TO_MM_Y, 320, 36);
+    static final Rectangle WF_MM_RECT = new Rectangle(TO_MM_X, WF_MM_Y, 320, 36); // WF = Warfare
     
     /**
      * Returns the board in its present condition.
@@ -257,9 +258,13 @@ abstract class Board {
                 }
             }
             
-            if (interactivePiece != null) { drawInteractivePiece(g2); }
             if (gameOver) {
                 g2.drawImage(Images.GAME_OVERLAY, 0, GAME_OVER_Y, null);
+            } else if (toMMHighlighted) {
+                g2.drawImage(Images.BACK_TO_MM3, TO_MM_X, WF_MM_Y, null);
+            } else {
+                g2.drawImage(Images.BACK_TO_MM2, TO_MM_X, WF_MM_Y, null);
+                if (interactivePiece != null) { drawInteractivePiece(g2); }
             }
         }
     }

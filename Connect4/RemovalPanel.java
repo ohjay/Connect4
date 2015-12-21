@@ -108,7 +108,7 @@ public class RemovalPanel extends ReguC4Panel {
                         && mouseY > board.topOffset 
                         && mouseY < board.topOffset + board.boardHeight * board.squareWidth);
                 
-                // Check if the "BACK TO MAIN MENU" icon should be highlighted
+                // See if the "BACK TO MAIN MENU" icon should be highlighted
                 if (Board.TO_MM_RECT.contains(mouseX, mouseY)) {
                     board.toMMHighlighted = true;
                 } else {

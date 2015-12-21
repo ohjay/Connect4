@@ -25,19 +25,21 @@ public class VsComputerPanel extends ReguC4Panel {
     
     @Override
     public void actionPerformed(ActionEvent evt) {
-        if (board.isPieceFalling) {
-            board.animateFallingPiece();
-        } else if (board.getCurrPlayer().equals(AI.COMPUTER_COLOR)) {
-            listenerEnabled = false;
-            if (turn1) {
-                board.addToColumn(board.interactivePiece, 3);
-                turn1 = false;
+        if (!board.gameOver) {
+            if (board.isPieceFalling) {
+                board.animateFallingPiece();
+            } else if (board.getCurrPlayer().equals(AI.COMPUTER_COLOR)) {
+                listenerEnabled = false;
+                if (turn1) {
+                    board.addToColumn(board.interactivePiece, 3);
+                    turn1 = false;
+                } else {
+                    // Run the minimax algorithm to get the computer's next move
+                    board.addToColumn(board.interactivePiece, AI.getBestComputerMove(board, maxDepth));
+                }
             } else {
-                // Run the minimax algorithm to get the computer's next move
-                board.addToColumn(board.interactivePiece, AI.getBestComputerMove(board, maxDepth));
+                listenerEnabled = true;
             }
-        } else {
-            listenerEnabled = true;
         }
         
         repaint();

@@ -47,7 +47,7 @@ public class WarfarePanel extends KPanel {
          * we'll place it there.
          */
         public void mouseClicked(MouseEvent evt) {
-            if (board.gameOver) {
+            if (board.gameOver || board.toMMHighlighted) {
                 Connect4.returnToMainMenu();
             } else if (MouseData.x > board.leftOffset 
                     && MouseData.x < board.leftOffset + board.boardWidth * board.squareWidth
@@ -68,6 +68,12 @@ public class WarfarePanel extends KPanel {
                 MouseData.y = evt.getY();
                 board.interactivePiece.setXY(MouseData.x - Piece.SMALL_WIDTH / 2, 
                         MouseData.y - Piece.SMALL_WIDTH / 2); // center the piece around the cursor
+                
+                if (Board.WF_MM_RECT.contains(MouseData.x, MouseData.y)) {
+                    board.toMMHighlighted = true;
+                } else {
+                    board.toMMHighlighted = false;
+                }
             }
         }
     }

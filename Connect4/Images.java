@@ -19,7 +19,8 @@ public class Images {
             GOLD_BACKGROUND_2 = new ImageIcon(Images.class.getResource("/images/gold_bg2.png")).getImage(),
             GAME_OVERLAY = new ImageIcon(Images.class.getResource("/images/gameOverlay.png")).getImage(),
             BACK_TO_MM1 = new ImageIcon(Images.class.getResource("/images/backToMM1.png")).getImage(),
-            BACK_TO_MM2 = new ImageIcon(Images.class.getResource("/images/backToMM2.png")).getImage();
+            BACK_TO_MM2 = new ImageIcon(Images.class.getResource("/images/backToMM2.png")).getImage(),
+            BACK_TO_MM3 = new ImageIcon(Images.class.getResource("/images/backToMM3.png")).getImage();
     // Small board/piece images (33x33 and 36x36)
     static final Image SMALL_SQUARE = new ImageIcon(Images.class.getResource("/images/c4Square_small.png")).getImage(),
             SMALL_RED = new ImageIcon(Images.class.getResource("/images/c4RedPiece_small.png")).getImage(),

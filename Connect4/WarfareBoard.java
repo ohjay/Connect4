@@ -10,8 +10,8 @@ public class WarfareBoard extends Board {
         // Set positional coordinates
         boardWidth = 14; 
         boardHeight = 14;
-        leftOffset = 46;
-        topOffset = 37;
+        leftOffset = 47;
+        topOffset = 20;
         squareWidth = 36;
         maxNumPieces = boardWidth * boardHeight;
         
