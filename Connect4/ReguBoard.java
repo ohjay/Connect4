@@ -34,7 +34,7 @@ public class ReguBoard extends Board {
     private void setPositionalValues() {
         boardWidth = 7; 
         boardHeight = 6;
-        leftOffset = 87;
+        leftOffset = 89;
         topOffset = 100;
         squareWidth = 60; 
         pieceStartHeight = 20;

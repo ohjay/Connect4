@@ -82,7 +82,7 @@ public class RemovalBoard extends ReguBoard {
                 } else {
                     // Game over! Somebody won
                     interactivePiece = null;
-                    Connect4.returnToMainMenu();
+                    gameOver = true;
                     return;
                 }
             } else {

@@ -7,11 +7,11 @@ package Connect4;
  */
 public class SolvedPanel extends VsComputerPanel {
     /**
-     * Constructs a "solved" panel with a minimax depth of 12.
-     * This means that the computer will always be looking 12 turns ahead.
+     * Constructs a "solved" panel with a minimax depth of 10.
+     * This means that the computer will always be looking 10 turns ahead.
      */
     public SolvedPanel() {
         /* Implicit call to super() */
-        maxDepth = 12;
+        maxDepth = 10;
     }
 }
