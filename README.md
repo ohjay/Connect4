@@ -23,10 +23,19 @@ This download _probably_ does not have any viruses attached. It will require you
 
 ## Implementation Details
 #### Artificially Intelligent Gameplay
-[Insert intelligent explanation/discourse on minimax here.]
+By far the most interesting thing I got to explore in this project was the implementation of a Connect Four AI. My computer player makes use of the standard minimax algorithm (with alpha-beta pruning to speed up execution). Conceptually, this means that for any board state, the computer can examine all future move possibilities and determine the optimal play. It turns out "all future move possibilities" can be represented as a game tree. For example, a Tic-tac-toe tree would look something like this:
+![alt text](https://github.com/ohjay/Connect4/blob/master/demo_imgs/alphabeta.jpg "Tic-tac-toe game tree")
+
+My AI constructs the next N levels of the Connect4 game tree (via simulated board arrays), and for every leaf state evaluates the strength of the board from the computer's point of view. Assuming a depth-limited implementation, the easy cases are boards in which the computer wins or loses: these garner scores of INFINITY and -INFINITY, respectively. If nobody has won, it gets a little trickier. For these game states, my heuristic evaluation function takes into account the number of potential 4s for each side and the progress each player has made toward that 4. In other words, if a player already has two or three pieces going toward a potential four, they'll earn some points in my heuristic.
+
+Once we have the strength of each of the leaves, we'll basically look at our tree as a decision tree and assume that both sides are playing optimally. If the leaf boards were the result of the computer's move, then obviously the computer would want to achieve the board with the greatest "strength." Hence, we would use the "max"-strength leaves (for each group of leaves). Traveling one level up the tree, it would before have been the human player's move, who we'd assume would want to MINIMIZE the computer's score. Thus, we'd take the "min"-strength states from there. The next move up the tree would be the computer's move, who'd again choose the "max"-strength states... and so on/so forth until it'd get to the computer's original move, in which the computer naturally would select the move with the best score that had managed to propagate all the way up the tree. 
+
+The cycle of the computer wanting to "maximize" its score and the player wanting to "minimize" that score, of course, is the reason for the name "minimax." Given the first move and the chance to look at the entire game tree every time, the computer can [always win the game](http://www.informatik.uni-trier.de/~fernau/DSL0607/Masterthesis-Viergewinnt.pdf)! Unfortunately, getting this to work in an at-all reasonable amount of time would require a lot more optimizations than I actually performed. (There are over 4 trillion board states to look at :!) This being the case, my computers are actually beatable and operate using limited game tree depths. In order for this to work, I use the heuristic eval function I mentioned above in order to assign scores to leaf boards. 
+
+All in all, I'd say it still works rather well. It did manage to beat a lot of the plebeian humans I tested it on (including myself a couple of times!).
 
 #### Everything Else
-"Everything else" was just a bunch of standard game programming: switching between JPanels, running events on timers/mouse actions, and checking whether or not someone just connected four. If you have any specific questions about this stuff, feel free to peruse my code or send me an anonymous email.
+The rest of Connect4 was just a bunch of standard game programming: switching between JPanels, running events on timers + mouse actions, and checking whether someone just connected four. If you have specific questions about this stuff, feel free to peruse my code or send me an anonymous email.
 
 ## Game Modes
 Connect4 is a Swing application that allows the user to enjoy several different game modes:
@@ -36,9 +45,6 @@ Connect4 is a Swing application that allows the user to enjoy several different 
 - **Warfare**: allows four players to play at the same time, and form alliances as they will
 - **Four by Two**: enables players to place two pieces at a time
 - **Removal**: enables players to remove one of their pieces as their turn
-
-## Technical Challenges
-Minimax, minimax, minimax. This should have been relatively straightforward, but somehow I botched it. On my first go, my AI player either took forever to move or just wasn't very good. (More to follow, after I actually _make_ it good.)
 
 ## Visuals
 ![alt text](https://github.com/ohjay/Connect4/blob/master/demo_imgs/demo_img1.png "Gameplay screens")
