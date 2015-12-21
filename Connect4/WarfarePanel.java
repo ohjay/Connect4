@@ -41,9 +41,15 @@ public class WarfarePanel extends KPanel {
     }
     
     class WarfareMouseListener extends MouseAdapter {
-        
+        /**
+         * If the game is over, we'll return to the main menu.
+         * Otherwise, if the interactive piece is currently positioned over an valid square,
+         * we'll place it there.
+         */
         public void mouseClicked(MouseEvent evt) {
-            if (MouseData.x > board.leftOffset 
+            if (board.gameOver) {
+                Connect4.returnToMainMenu();
+            } else if (MouseData.x > board.leftOffset 
                     && MouseData.x < board.leftOffset + board.boardWidth * board.squareWidth
                     && MouseData.y > board.topOffset 
                     && MouseData.y < board.topOffset + board.boardHeight * board.squareWidth) {
@@ -57,10 +63,12 @@ public class WarfarePanel extends KPanel {
         }
         
         public void mouseMoved(MouseEvent evt) {
-            MouseData.x = evt.getX();
-            MouseData.y = evt.getY();
-            board.interactivePiece.setXY(MouseData.x - Piece.SMALL_WIDTH / 2, 
-                    MouseData.y - Piece.SMALL_WIDTH / 2); // center the piece around the cursor
+            if (!board.gameOver) {
+                MouseData.x = evt.getX();
+                MouseData.y = evt.getY();
+                board.interactivePiece.setXY(MouseData.x - Piece.SMALL_WIDTH / 2, 
+                        MouseData.y - Piece.SMALL_WIDTH / 2); // center the piece around the cursor
+            }
         }
     }
 }

@@ -48,7 +48,9 @@ public class VsComputerPanel extends ReguC4Panel {
          * Sends the interactive piece (if there is one) downward, as if it were dropped.
          */
         public void mouseClicked(MouseEvent evt) {
-            if (listenerEnabled) {
+            if (board.gameOver || board.toMMHighlighted) {
+                Connect4.returnToMainMenu();
+            } else if (listenerEnabled) {
                 if (board.interactivePiece != null && !board.isPieceFalling) {
                     int nearestCol = board.getNearestCol(MouseData.x - Piece.REG_WIDTH / 2);
                     if (!board.isColumnFull(nearestCol)) {
@@ -62,13 +64,21 @@ public class VsComputerPanel extends ReguC4Panel {
          * Controls the interactive piece, and registers movement in the MouseData class.
          */
         public void mouseMoved(MouseEvent evt) {
-            MouseData.x = evt.getX();
-            if (listenerEnabled) {
-                if (MouseData.x >= Piece.REG_WIDTH / 2
-                        && MouseData.x <= Connect4.WINDOW_LEN - Piece.REG_WIDTH / 2) {
-                    if (!board.isPieceFalling) {
-                        board.interactivePiece.setX(MouseData.x - Piece.REG_WIDTH / 2);
+            if (!board.gameOver) {
+                MouseData.x = evt.getX();
+                if (listenerEnabled) {
+                    if (MouseData.x >= Piece.REG_WIDTH / 2
+                            && MouseData.x <= Connect4.WINDOW_LEN - Piece.REG_WIDTH / 2) {
+                        if (!board.isPieceFalling) {
+                            board.interactivePiece.setX(MouseData.x - Piece.REG_WIDTH / 2);
+                        }
                     }
+                }
+                
+                if (Board.TO_MM_RECT.contains(MouseData.x, evt.getY())) {
+                    board.toMMHighlighted = true;
+                } else {
+                    board.toMMHighlighted = false;
                 }
             }
         }

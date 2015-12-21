@@ -54,13 +54,14 @@ public class VsCPUMenuPanel extends MenuPanel {
          */
         public void mouseMoved(MouseEvent evt) {
             // Get the coordinates of the cursor in its current position
-            int x = evt.getX();
-            int y = evt.getY();
+            MouseData.x = evt.getX();
+            MouseData.y = evt.getY();
             
-            if (EASY_EXT_RECT.contains(x, y)) { imgIndex = 1; } 
-            else if (HARD_EXT_RECT.contains(x, y)) { imgIndex = 2; }
-            else if (MM_RECT.contains(x, y)) { imgIndex = 3; }
-            else if (!EASY_EXT_RECT.contains(x, y) && !HARD_EXT_RECT.contains(x, y)) {
+            if (EASY_EXT_RECT.contains(MouseData.x, MouseData.y)) { imgIndex = 1; } 
+            else if (HARD_EXT_RECT.contains(MouseData.x, MouseData.y)) { imgIndex = 2; }
+            else if (MM_RECT.contains(MouseData.x, MouseData.y)) { imgIndex = 3; }
+            else if (!EASY_EXT_RECT.contains(MouseData.x, MouseData.y) 
+                    && !HARD_EXT_RECT.contains(MouseData.x, MouseData.y)) {
                 imgIndex = 0;
             }
             

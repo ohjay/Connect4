@@ -52,13 +52,13 @@ public class VsHumanMenuPanel extends MenuPanel {
          */
         public void mouseMoved(MouseEvent evt) {
             // Get the coordinates of the cursor in its current position
-            int x = evt.getX();
-            int y = evt.getY();
+            MouseData.x = evt.getX();
+            MouseData.y = evt.getY();
             
             // Check if the cursor is currently hovering over any of the icons
-            if (ONEC_RECT.contains(x, y)) { imgIndex = 2; } 
-            else if (TWOC_RECT.contains(x, y)) { imgIndex = 3; } 
-            else if (MM_RECT.contains(x, y)) { imgIndex = 1; } 
+            if (ONEC_RECT.contains(MouseData.x, MouseData.y)) { imgIndex = 2; } 
+            else if (TWOC_RECT.contains(MouseData.x, MouseData.y)) { imgIndex = 3; } 
+            else if (MM_RECT.contains(MouseData.x, MouseData.y)) { imgIndex = 1; } 
             else { imgIndex = 0; }
             
             repaint();

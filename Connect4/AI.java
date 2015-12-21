@@ -34,7 +34,6 @@ public class AI {
                 
                 // Check if the move yields the best score we've seen so far
                 int score = minimax(b, depth - 1, p, Integer.MIN_VALUE, Integer.MAX_VALUE, false);
-                System.out.println("[Column " + c + "] The computer is considering " + score); // debugging output
                 if (score > maxScore) {
                     maxScore = score;
                     computerMove = c;
@@ -47,7 +46,6 @@ public class AI {
             }
         }
         
-        System.out.println("\n==========\n"); // formatting for debugging output
         return computerMove;
     }
     

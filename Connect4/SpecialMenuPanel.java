@@ -56,13 +56,13 @@ public class SpecialMenuPanel extends SheetMenuPanel {
          */
         public void mouseMoved(MouseEvent evt) {
             // Retrieve cursor coordinates
-            int x = evt.getX();
-            int y = evt.getY();
+            MouseData.x = evt.getX();
+            MouseData.y = evt.getY();
             
-            if (MM_RECT.contains(x, y)) { imgIndex = 1; } 
-            else if (WARF_RECT.contains(x, y)) { imgIndex = 2; }
-            else if (TWOFO_RECT.contains(x, y)) { imgIndex = 3; }
-            else if (REMO_RECT.contains(x, y)) { imgIndex = 4; }
+            if (MM_RECT.contains(MouseData.x, MouseData.y)) { imgIndex = 1; } 
+            else if (WARF_RECT.contains(MouseData.x, MouseData.y)) { imgIndex = 2; }
+            else if (TWOFO_RECT.contains(MouseData.x, MouseData.y)) { imgIndex = 3; }
+            else if (REMO_RECT.contains(MouseData.x, MouseData.y)) { imgIndex = 4; }
             else { imgIndex = 0; }
             
             repaint();

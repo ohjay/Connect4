@@ -52,7 +52,9 @@ public class RemovalPanel extends ReguC4Panel {
          * Otherwise, proceeds as normal (and just drops a piece into a column).
          */
         public void mouseClicked(MouseEvent evt) {
-            if (board.interactivePiece != null && !board.isPieceFalling && !board.isColumnFalling()) {
+            if (board.gameOver || board.toMMHighlighted) {
+                Connect4.returnToMainMenu();
+            } else if (board.interactivePiece != null && !board.isPieceFalling && !board.isColumnFalling()) {
                 if (board.shouldHidePiece) {
                     // The user may be trying to remove a piece. Let's see if they clicked on one:
                     // 1) Calculate the approximate array indices of the mouse coordinates
@@ -88,22 +90,31 @@ public class RemovalPanel extends ReguC4Panel {
          * this method will hide the interactive piece.
          */
         public void mouseMoved(MouseEvent evt) {
-            // Positional coordinates
-            int mouseX = evt.getX();
-            int mouseY = evt.getY();
+            if (!board.gameOver) {
+                // Positional coordinates
+                int mouseX = evt.getX();
+                int mouseY = evt.getY();
             
-            if (mouseX >= Piece.REG_WIDTH / 2
-                    && mouseX <= Connect4.WINDOW_LEN - Piece.REG_WIDTH / 2) {
-                MouseData.x = mouseX;
-                if (!board.isPieceFalling) {
-                    board.interactivePiece.setX(mouseX - Piece.REG_WIDTH / 2);
+                if (mouseX >= Piece.REG_WIDTH / 2
+                        && mouseX <= Connect4.WINDOW_LEN - Piece.REG_WIDTH / 2) {
+                    MouseData.x = mouseX;
+                    if (!board.isPieceFalling) {
+                        board.interactivePiece.setX(mouseX - Piece.REG_WIDTH / 2);
+                    }
+                }
+            
+                board.shouldHidePiece = (mouseX > board.leftOffset 
+                        && mouseX < board.leftOffset + board.boardWidth * board.squareWidth
+                        && mouseY > board.topOffset 
+                        && mouseY < board.topOffset + board.boardHeight * board.squareWidth);
+                
+                // Check if the "BACK TO MAIN MENU" icon should be highlighted
+                if (Board.TO_MM_RECT.contains(mouseX, mouseY)) {
+                    board.toMMHighlighted = true;
+                } else {
+                    board.toMMHighlighted = false;
                 }
             }
-            
-            board.shouldHidePiece = (mouseX > board.leftOffset 
-                    && mouseX < board.leftOffset + board.boardWidth * board.squareWidth
-                    && mouseY > board.topOffset 
-                    && mouseY < board.topOffset + board.boardHeight * board.squareWidth);
         }
     }
 }

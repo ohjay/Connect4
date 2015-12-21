@@ -10,7 +10,7 @@ import java.awt.event.ActionEvent;
  */
 public abstract class ReguC4Panel extends KPanel {
     protected ReguBoard board;
-    protected int bgId = 6;
+    protected int bgId = 4;
     
     /**
      * Resets the regular Connect4 board in addition to the standard activation method.

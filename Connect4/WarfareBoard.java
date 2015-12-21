@@ -40,7 +40,7 @@ public class WarfareBoard extends Board {
         numPieces++;
         
         if (makesFour(piece) || isBoardFull()) {
-            Connect4.returnToMainMenu();
+            gameOver = true;
         } else {
             // Continue the game
             switchPlayers();

@@ -1,6 +1,7 @@
 package Connect4;
 
 import java.awt.Graphics2D;
+import java.awt.Rectangle;
 
 /**
  * The most general abstraction for a board.
@@ -17,6 +18,11 @@ abstract class Board {
     protected String currColor;
     protected boolean warfareMode;
     Piece interactivePiece; // only 1 piece controlled at once
+    boolean gameOver, toMMHighlighted;
+    
+    // Overlay image positioning coordinates
+    private static final int GAME_OVER_Y = 230, TO_MM_X = 140, TO_MM_Y = 500;
+    static final Rectangle TO_MM_RECT = new Rectangle(TO_MM_X, TO_MM_Y, 320, 36);
     
     /**
      * Returns the board in its present condition.
@@ -201,9 +207,6 @@ abstract class Board {
     public void draw(Graphics2D g2, int bgId) {
         // First, draw the background (if there is one)
         switch (bgId) {
-            case 6:
-                g2.drawImage(Images.GOLD_BACKGROUND_6, 0, 0, null);
-                break;
             case 5:
                 g2.drawImage(Images.GOLD_BACKGROUND_5, 0, 0, null);
                 break;
@@ -236,6 +239,15 @@ abstract class Board {
                             topOffset + j * squareWidth, null);
                 }
             }
+            
+            // "Game over" + "back to main menu" overlays
+            if (gameOver) {
+                g2.drawImage(Images.GAME_OVERLAY, 0, GAME_OVER_Y, null);
+            } else if (toMMHighlighted) {
+                g2.drawImage(Images.BACK_TO_MM2, TO_MM_X, TO_MM_Y, null);
+            } else {
+                g2.drawImage(Images.BACK_TO_MM1, TO_MM_X, TO_MM_Y, null);
+            }
         } else {
             // In Warfare, we draw the interactive piece above the board
             for (int i = 0; i < boardWidth; i++) { 
@@ -246,6 +258,9 @@ abstract class Board {
             }
             
             if (interactivePiece != null) { drawInteractivePiece(g2); }
+            if (gameOver) {
+                g2.drawImage(Images.GAME_OVERLAY, 0, GAME_OVER_Y, null);
+            }
         }
     }
 }

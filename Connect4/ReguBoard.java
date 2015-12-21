@@ -35,9 +35,9 @@ public class ReguBoard extends Board {
         boardWidth = 7; 
         boardHeight = 6;
         leftOffset = 87;
-        topOffset = 80;
+        topOffset = 90;
         squareWidth = 60; 
-        pieceStartHeight = 10;
+        pieceStartHeight = 15;
         maxNumPieces = 42;
     }
     
@@ -115,8 +115,8 @@ public class ReguBoard extends Board {
         // Check if the piece makes four-in-a-row
         if (makesFour(interactivePiece)) {
             // If so, the game is over!
-            System.out.println(this); // debugging output (state of the board @ end of game)
-            Connect4.returnToMainMenu();
+            interactivePiece = null;
+            gameOver = true;
             return;
         }
         
@@ -127,8 +127,7 @@ public class ReguBoard extends Board {
         } else {
             // Game's over guys, let's go home
             interactivePiece = null;
-            Connect4.returnToMainMenu();
-            return;
+            gameOver = true;
         }
     }
     
